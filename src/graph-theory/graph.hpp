@@ -8,6 +8,7 @@
 
 #include <deque>
 #include <functional>
+#include <ostream>
 #include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
@@ -20,7 +21,10 @@ namespace cppgraph {
 template<class _N>
 class Graph
 {
-    using ProcessNode = std::function<void(const _N& node)>;
+    using ProcessNodeDfs = std::function<void(const _N& node)>;
+    using ProcessNodeBfs = std::function<void(const _N& parent, const _N& child)>;
+
+    friend std::ostream& operator<<(std::ostream& out, const Graph& graph);
 
 public:
     Graph()
@@ -49,14 +53,14 @@ public:
         srcNode.addEdge({destId, weight});
     }
 
-    void dfs(const _N& statrt, const ProcessNode& callback)
+    void dfs(const _N& statrt, const ProcessNodeDfs& callback)
     {
         auto visited = std::unordered_set<std::uint32_t>{};
         auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
         dfs(id, visited, callback);
     }
 
-    void bfs(const _N& statrt, const ProcessNode& callback)
+    void bfs(const _N& statrt, const ProcessNodeBfs& callback)
     {
         const auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
         auto visited = std::unordered_set<std::uint32_t>{};
@@ -64,7 +68,7 @@ public:
 
         visited.insert(id);
         que.push_back(id);
-        callback(_nodeLookup.at(id).value());
+        callback(_nodeLookup.at(id).value(), _nodeLookup.at(id).value());
 
         while (!que.empty()) {
             const auto nodeId = que.front();
@@ -75,7 +79,7 @@ public:
 
                 visited.insert(adj.id());
                 que.push_back(adj.id());
-                callback(_nodeLookup.at(adj.id()).value());
+                callback(_nodeLookup.at(nodeId).value(), _nodeLookup.at(adj.id()).value());
             }
         }
     }
@@ -94,7 +98,9 @@ public:
 
 private:
     void
-    dfs(std::uint32_t id, std::unordered_set<std::uint32_t>& visited, const ProcessNode& callback)
+    dfs(std::uint32_t id,
+        std::unordered_set<std::uint32_t>& visited,
+        const ProcessNodeDfs& callback)
     {
         if (visited.count(id))
             return;
