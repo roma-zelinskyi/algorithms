@@ -24,7 +24,8 @@ class Graph
     using ProcessNodeDfs = std::function<void(const _N& node)>;
     using ProcessNodeBfs = std::function<void(const _N& parent, const _N& child)>;
 
-    friend std::ostream& operator<<(std::ostream& out, const Graph& graph);
+    template<class _T>
+    friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
 
 public:
     Graph()
@@ -81,18 +82,6 @@ public:
                 que.push_back(adj.id());
                 callback(_nodeLookup.at(nodeId).value(), _nodeLookup.at(adj.id()).value());
             }
-        }
-    }
-
-    void print()
-    {
-        for (const auto& it : _nodeLookup) {
-            std::cout << it.second.value() << "-> ";
-            for (const auto& adj : it.second.adjacent())
-                std::cout << '[' << _nodeLookup.at(adj.id()).value() << ',' << adj.weight() << ']'
-                          << ' ';
-
-            std::cout << '\n';
         }
     }
 
