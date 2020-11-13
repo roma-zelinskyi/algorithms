@@ -6,8 +6,10 @@
 
 #pragma once
 
+#include <functional>
 #include <stdexcept>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "edge.hpp"
 #include "node.hpp"
@@ -17,6 +19,8 @@ namespace cppgraph {
 template<class _N>
 class Graph
 {
+    using ProcessNode = std::function<void(const _N& node)>;
+
 public:
     Graph()
         : _nodeLookup{}
@@ -44,6 +48,13 @@ public:
         srcNode.addEdge({destId, weight});
     }
 
+    void dfs(const _N& statrt, const ProcessNode& callback)
+    {
+        auto visited = std::unordered_set<std::uint32_t>{};
+        auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
+        dfs(id, visited, callback);
+    }
+
     void print()
     {
         for (const auto& it : _nodeLookup) {
@@ -54,6 +65,24 @@ public:
 
             std::cout << '\n';
         }
+    }
+
+private:
+    void
+    dfs(std::uint32_t id, std::unordered_set<std::uint32_t>& visited, const ProcessNode& callback)
+    {
+        if (visited.count(id))
+            return;
+
+        visited.insert(id);
+
+        for (const auto& adj : _nodeLookup.at(id).adjacent()) {
+            const auto& nextNode = _nodeLookup.at(adj.id());
+            auto nextNodeId = static_cast<std::uint32_t>(std::hash<_N>{}(nextNode.value()));
+            dfs(nextNodeId, visited, callback);
+        }
+
+        callback(_nodeLookup.at(id).value());
     }
 
 private:
