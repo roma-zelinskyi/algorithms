@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <deque>
 #include <functional>
 #include <stdexcept>
 #include <unordered_map>
@@ -53,6 +54,30 @@ public:
         auto visited = std::unordered_set<std::uint32_t>{};
         auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
         dfs(id, visited, callback);
+    }
+
+    void bfs(const _N& statrt, const ProcessNode& callback)
+    {
+        const auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
+        auto visited = std::unordered_set<std::uint32_t>{};
+        auto que = std::deque<std::uint32_t>{};
+
+        visited.insert(id);
+        que.push_back(id);
+        callback(_nodeLookup.at(id).value());
+
+        while (!que.empty()) {
+            const auto nodeId = que.front();
+            que.pop_front();
+            for (const auto& adj : _nodeLookup.at(nodeId).adjacent()) {
+                if (visited.count(adj.id()))
+                    continue;
+
+                visited.insert(adj.id());
+                que.push_back(adj.id());
+                callback(_nodeLookup.at(adj.id()).value());
+            }
+        }
     }
 
     void print()
