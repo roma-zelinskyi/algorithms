@@ -13,3 +13,4 @@ set(CXX_EXTENSIONS OFF)
 include(cmake/Warnings.cmake)
 
 add_subdirectory(src)
+add_subdirectory(tests)
