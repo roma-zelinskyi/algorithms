@@ -7,14 +7,14 @@
 #pragma once
 
 #include <deque>
+#include <forward_list>
 #include <functional>
-#include <ostream>
+#include <optional>
 #include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 
 #include "edge.hpp"
-#include "node.hpp"
 
 namespace cppgraph {
 
@@ -22,91 +22,80 @@ template<class _N>
 class Graph
 {
     using ProcessNodeDfs = std::function<void(const _N& node)>;
-    using ProcessNodeBfs = std::function<void(const _N& parent, const _N& child)>;
+    using ProcessNodeBfs = std::function<void(const std::optional<_N>& parent, const _N& child)>;
 
     template<class _T>
     friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
 
 public:
     Graph()
-        : _nodeLookup{}
+        : _adjList{}
     {
     }
 
     void addNode(const _N& node)
     {
-        auto id = static_cast<std::uint32_t>(std::hash<_N>{}(node));
-        if (_nodeLookup.count(id))
+        if (_adjList.count(node))
             throw std::invalid_argument{"The node already exist"};
 
-        _nodeLookup.emplace(id, node);
+        _adjList[node] = {};
     }
 
     void addEdge(const _N& src, const _N& dest, double weight = 0)
     {
-        auto srcId = static_cast<std::uint32_t>(std::hash<_N>{}(src));
-        auto destId = static_cast<std::uint32_t>(std::hash<_N>{}(dest));
-
-        if (!_nodeLookup.count(srcId) || !_nodeLookup.count(destId))
+        if (!_adjList.count(src) || !_adjList.count(dest))
             throw std::invalid_argument{"No such node exist in graph"};
 
-        auto& srcNode = _nodeLookup.at(srcId);
-        srcNode.addEdge({destId, weight});
+        const auto& destNode = _adjList.find(dest)->first;
+        auto& srcNode = _adjList.at(src);
+        srcNode.emplace_front(destNode, weight);
     }
 
     void dfs(const _N& statrt, const ProcessNodeDfs& callback)
     {
-        auto visited = std::unordered_set<std::uint32_t>{};
-        auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
-        dfs(id, visited, callback);
+        auto visited = std::unordered_set<_N>{};
+        dfs(statrt, visited, callback);
     }
 
-    void bfs(const _N& statrt, const ProcessNodeBfs& callback)
+    void bfs(const _N& start, const ProcessNodeBfs& callback)
     {
-        const auto id = static_cast<std::uint32_t>(std::hash<_N>{}(statrt));
-        auto visited = std::unordered_set<std::uint32_t>{};
-        auto que = std::deque<std::uint32_t>{};
+        auto visited = std::unordered_set<_N>{};
+        auto que = std::deque<std::reference_wrapper<const _N>>{};
 
-        visited.insert(id);
-        que.push_back(id);
-        callback(_nodeLookup.at(id).value(), _nodeLookup.at(id).value());
+        visited.insert(start);
+        que.emplace_back(start);
+        callback(std::nullopt, start);
 
         while (!que.empty()) {
-            const auto nodeId = que.front();
+            const auto& node = que.front().get();
             que.pop_front();
-            for (const auto& adj : _nodeLookup.at(nodeId).adjacent()) {
-                if (visited.count(adj.id()))
+            for (const auto& adj : _adjList.at(node)) {
+                if (visited.count(adj.node()))
                     continue;
 
-                visited.insert(adj.id());
-                que.push_back(adj.id());
-                callback(_nodeLookup.at(nodeId).value(), _nodeLookup.at(adj.id()).value());
+                visited.insert(adj.node());
+                que.emplace_back(adj.node());
+                callback(node, adj.node());
             }
         }
     }
 
 private:
-    void
-    dfs(std::uint32_t id,
-        std::unordered_set<std::uint32_t>& visited,
-        const ProcessNodeDfs& callback)
+    void dfs(const _N& node, std::unordered_set<_N>& visited, const ProcessNodeDfs& callback)
     {
-        if (visited.count(id))
+        if (visited.count(node))
             return;
 
-        visited.insert(id);
+        visited.insert(node);
 
-        for (const auto& adj : _nodeLookup.at(id).adjacent()) {
-            const auto& nextNode = _nodeLookup.at(adj.id());
-            auto nextNodeId = static_cast<std::uint32_t>(std::hash<_N>{}(nextNode.value()));
-            dfs(nextNodeId, visited, callback);
-        }
+        for (const auto& adj : _adjList.at(node))
+            dfs(adj.node(), visited, callback);
 
-        callback(_nodeLookup.at(id).value());
+        callback(node);
     }
 
 private:
-    std::unordered_map<std::uint32_t, Node<_N>> _nodeLookup;
+    std::unordered_map<_N, std::forward_list<Edge<_N>>> _adjList;
 };
 
 } // namespace cppgraph
