@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "bfs.hpp"
 #include "edge.hpp"
 
 namespace cppgraph {
@@ -22,7 +23,6 @@ template<class _N>
 class Graph
 {
     using ProcessNodeDfs = std::function<void(const _N& node)>;
-    using ProcessNodeBfs = std::function<void(const std::optional<_N>& parent, const _N& child)>;
 
     template<class _T>
     friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
@@ -31,6 +31,19 @@ public:
     Graph()
         : _adjList{}
     {
+    }
+
+    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& adjList() const noexcept
+    {
+        return _adjList;
+    }
+
+    Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt)
+    {
+        if (start)
+            return Bfs{*this, start.value()};
+
+        return Bfs{*this, _adjList.begin()->first};
     }
 
     void addNode(const _N& node)
@@ -55,29 +68,6 @@ public:
     {
         auto visited = std::unordered_set<_N>{};
         dfs(statrt, visited, callback);
-    }
-
-    void bfs(const _N& start, const ProcessNodeBfs& callback)
-    {
-        auto visited = std::unordered_set<_N>{};
-        auto que = std::deque<std::reference_wrapper<const _N>>{};
-
-        visited.insert(start);
-        que.emplace_back(start);
-        callback(std::nullopt, start);
-
-        while (!que.empty()) {
-            const auto& node = que.front().get();
-            que.pop_front();
-            for (const auto& adj : _adjList.at(node)) {
-                if (visited.count(adj.node()))
-                    continue;
-
-                visited.insert(adj.node());
-                que.emplace_back(adj.node());
-                callback(node, adj.node());
-            }
-        }
     }
 
 private:
