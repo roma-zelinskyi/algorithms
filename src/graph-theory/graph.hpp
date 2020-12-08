@@ -15,6 +15,7 @@
 #include <unordered_set>
 
 #include "bfs.hpp"
+#include "dfs.hpp"
 #include "edge.hpp"
 
 namespace cppgraph {
@@ -22,20 +23,19 @@ namespace cppgraph {
 template<class _N>
 class Graph
 {
-    using ProcessNodeDfs = std::function<void(const _N& node)>;
-
     template<class _T>
     friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
 
+    friend class Bfs<_N>::iterator;
+    friend class Dfs<_N>::iterator;
+
 public:
+    using BfsIterator = typename Bfs<_N>::iterator;
+    using DfsIterator = typename Dfs<_N>::iterator;
+
     Graph()
         : _adjList{}
     {
-    }
-
-    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& adjList() const noexcept
-    {
-        return _adjList;
     }
 
     Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt)
@@ -44,6 +44,34 @@ public:
             return Bfs{*this, start.value()};
 
         return Bfs{*this, _adjList.begin()->first};
+    }
+
+    typename Bfs<_N>::iterator bfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    {
+        return bfs(start).begin();
+    }
+
+    typename Bfs<_N>::iterator bfsEnd() noexcept
+    {
+        return bfs().end();
+    }
+
+    Dfs<_N> dfs(const std::optional<_N>& start = std::nullopt)
+    {
+        if (start)
+            return Dfs{*this, start.value()};
+
+        return Dfs{*this, _adjList.begin()->first};
+    }
+
+    typename Dfs<_N>::iterator dfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    {
+        return dfs(start).begin();
+    }
+
+    typename Dfs<_N>::iterator dfsEnd() noexcept
+    {
+        return dfs().end();
     }
 
     void addNode(const _N& node)
@@ -62,26 +90,6 @@ public:
         const auto& destNode = _adjList.find(dest)->first;
         auto& srcNode = _adjList.at(src);
         srcNode.emplace_front(destNode, weight);
-    }
-
-    void dfs(const _N& statrt, const ProcessNodeDfs& callback)
-    {
-        auto visited = std::unordered_set<_N>{};
-        dfs(statrt, visited, callback);
-    }
-
-private:
-    void dfs(const _N& node, std::unordered_set<_N>& visited, const ProcessNodeDfs& callback)
-    {
-        if (visited.count(node))
-            return;
-
-        visited.insert(node);
-
-        for (const auto& adj : _adjList.at(node))
-            dfs(adj.node(), visited, callback);
-
-        callback(node);
     }
 
 private:

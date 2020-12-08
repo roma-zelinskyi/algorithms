@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <deque>
+#include <stack>
 #include <unordered_set>
 
 #include "edge.hpp"
@@ -16,8 +16,8 @@ namespace cppgraph {
 template<class _N>
 class Graph;
 
-template<class _N, template<typename> class _Que = std::deque>
-class Bfs
+template<class _N>
+class Dfs
 {
 public:
     class iterator
@@ -26,29 +26,28 @@ public:
         iterator()
             : _graph{nullptr}
             , _visited{}
-            , _que{}
+            , _stack{}
         {
         }
 
         explicit iterator(const Graph<_N>& graph, const _N& start)
             : _graph{&graph}
             , _visited{}
-            , _que{}
+            , _stack{}
         {
             _visited.insert(start);
-            _que.emplace_back(start);
+            _stack.push(std::cref(start));
         }
 
         iterator& operator++()
         {
-            const auto& node = _que.front().get();
-            _que.pop_front();
+            const auto& node = _stack.top().get();
+            _stack.pop();
             for (const auto& adj : _graph->_adjList.at(node)) {
-                if (_visited.count(adj.node()))
-                    continue;
-
-                _visited.insert(adj.node());
-                _que.emplace_back(adj.node());
+                if (!_visited.count(adj.node())) {
+                    _visited.insert(adj.node());
+                    _stack.push(std::cref(adj.node()));
+                }
             }
 
             return *this;
@@ -56,7 +55,7 @@ public:
 
         bool operator==(const iterator rhs) const
         {
-            return _que.empty() == rhs._que.empty();
+            return _stack.empty() == rhs._stack.empty();
         }
 
         bool operator!=(const iterator rhs) const
@@ -66,17 +65,17 @@ public:
 
         const _N& operator*()
         {
-            const auto& node = _que.front().get();
+            const auto& node = _stack.top().get();
             return node;
         }
 
     private:
         const Graph<_N>* _graph;
         std::unordered_set<_N> _visited;
-        _Que<std::reference_wrapper<const _N>> _que;
+        std::stack<std::reference_wrapper<const _N>> _stack;
     };
 
-    Bfs(const Graph<_N>& graph, const _N& start)
+    Dfs(const Graph<_N>& graph, const _N& start)
         : _graph{graph}
         , _start{start}
     {
