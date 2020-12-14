@@ -26,12 +26,12 @@ class Graph
     template<class _T>
     friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
 
-    friend class Bfs<_N>::iterator;
-    friend class Dfs<_N>::iterator;
+    friend class Bfs<_N>::Iterator;
+    friend class Dfs<_N>::Iterator;
 
 public:
-    using BfsIterator = typename Bfs<_N>::iterator;
-    using DfsIterator = typename Dfs<_N>::iterator;
+    using BfsIterator = typename Bfs<_N>::Iterator;
+    using DfsIterator = typename Dfs<_N>::Iterator;
 
     Graph()
         : _adjList{}
@@ -46,12 +46,12 @@ public:
         return Bfs{*this, _adjList.begin()->first};
     }
 
-    typename Bfs<_N>::iterator bfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
     {
         return bfs(start).begin();
     }
 
-    typename Bfs<_N>::iterator bfsEnd() noexcept
+    typename Bfs<_N>::Iterator bfsEnd() noexcept
     {
         return bfs().end();
     }
@@ -64,12 +64,12 @@ public:
         return Dfs{*this, _adjList.begin()->first};
     }
 
-    typename Dfs<_N>::iterator dfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    typename Dfs<_N>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
     {
         return dfs(start).begin();
     }
 
-    typename Dfs<_N>::iterator dfsEnd() noexcept
+    typename Dfs<_N>::Iterator dfsEnd() noexcept
     {
         return dfs().end();
     }

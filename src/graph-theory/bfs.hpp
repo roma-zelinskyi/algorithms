@@ -7,9 +7,9 @@
 #pragma once
 
 #include <deque>
-#include <unordered_set>
 
 #include "edge.hpp"
+#include "traversal.hpp"
 
 namespace cppgraph {
 
@@ -17,84 +17,60 @@ template<class _N>
 class Graph;
 
 template<class _N, template<typename> class _Que = std::deque>
-class Bfs
+class Bfs : private Traversal<_N, _Que>
 {
 public:
-    class iterator
+    class Iterator : public Traversal<_N, _Que>::IteratorBase
     {
     public:
-        iterator()
-            : _graph{nullptr}
-            , _visited{}
-            , _que{}
+        explicit Iterator(const Graph<_N>& graph)
+            : Traversal<_N, _Que>::IteratorBase{graph}
         {
         }
 
-        explicit iterator(const Graph<_N>& graph, const _N& start)
-            : _graph{&graph}
-            , _visited{}
-            , _que{}
+        explicit Iterator(const Graph<_N>& graph, const _N& start)
+            : Traversal<_N, _Que>::IteratorBase{graph}
         {
-            _visited.insert(start);
-            _que.emplace_back(start);
+            this->_visited.insert(start);
+            this->_container.emplace_back(start);
         }
 
-        iterator& operator++()
+        Iterator& operator++()
         {
-            const auto& node = _que.front().get();
-            _que.pop_front();
-            for (const auto& adj : _graph->_adjList.at(node)) {
-                if (_visited.count(adj.node()))
+            const auto& node = this->_container.front().get();
+            this->_container.pop_front();
+            for (const auto& adj : this->_graph._adjList.at(node)) {
+                if (this->_visited.count(adj.node()))
                     continue;
 
-                _visited.insert(adj.node());
-                _que.emplace_back(adj.node());
+                this->_visited.insert(adj.node());
+                this->_container.emplace_back(std::cref(adj.node()));
             }
 
             return *this;
         }
 
-        bool operator==(const iterator rhs) const
-        {
-            return _que.empty() == rhs._que.empty();
-        }
-
-        bool operator!=(const iterator rhs) const
-        {
-            return !(*this == rhs);
-        }
-
         const _N& operator*()
         {
-            const auto& node = _que.front().get();
+            const auto& node = this->_container.front().get();
             return node;
         }
-
-    private:
-        const Graph<_N>* _graph;
-        std::unordered_set<_N> _visited;
-        _Que<std::reference_wrapper<const _N>> _que;
     };
 
     Bfs(const Graph<_N>& graph, const _N& start)
-        : _graph{graph}
-        , _start{start}
+        : Traversal<_N, _Que>{graph, start}
     {
     }
 
-    iterator begin()
+    Iterator begin()
     {
-        return iterator{_graph, _start};
+        return Iterator{this->_graph, this->_start};
     }
 
-    iterator end()
+    Iterator end()
     {
-        return iterator{};
+        return Iterator{this->_graph};
     }
-
-private:
-    const Graph<_N>& _graph;
-    const _N& _start;
 };
 
 } // namespace cppgraph
