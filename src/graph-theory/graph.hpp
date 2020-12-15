@@ -12,7 +12,6 @@
 #include <optional>
 #include <stdexcept>
 #include <unordered_map>
-#include <unordered_set>
 
 #include "bfs.hpp"
 #include "dfs.hpp"
@@ -77,7 +76,7 @@ public:
     void addNode(const _N& node)
     {
         if (_adjList.count(node))
-            throw std::invalid_argument{"The node already exist"};
+            return;
 
         _adjList[node] = {};
     }
@@ -89,7 +88,13 @@ public:
 
         const auto& destNode = _adjList.find(dest)->first;
         auto& srcNode = _adjList.at(src);
-        srcNode.emplace_front(destNode, weight);
+
+        const auto res = std::find_if(srcNode.begin(), srcNode.end(), [&dest](const auto& edge) {
+            return edge.node() == dest;
+        });
+
+        if (res == std::end(srcNode))
+            srcNode.emplace_front(destNode, weight);
     }
 
 private:
