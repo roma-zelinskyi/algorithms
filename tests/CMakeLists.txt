@@ -4,7 +4,10 @@
 
 find_package(GTest REQUIRED)
 
-add_executable(tests main.cpp graph-theory/dfs.cpp)
+add_executable(tests 
+    main.cpp 
+    graph-theory/traversal_unittest.cpp 
+)
 
 set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
 

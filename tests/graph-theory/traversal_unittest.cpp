@@ -12,14 +12,13 @@
 #include <unordered_set>
 
 #include "graph-theory/graph.hpp"
-#include "graph-theory/io_graph.hpp"
 
 namespace {
 
-TEST(GraphTheoryTests, DfsTest)
+template<class _N, class _T>
+void travers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<std::string_view>{"A", "B", "C", "D", "E", "F", "G"};
-    auto graph = cppgraph::Graph<std::string_view>{};
 
     for (const auto& it : nodes)
         graph.addNode(it);
@@ -37,7 +36,7 @@ TEST(GraphTheoryTests, DfsTest)
     graph.addEdge("C", "A");
     graph.addEdge("C", "B");
 
-    for (const auto& it : graph.dfs()) {
+    for (const auto& it : traversal()) {
         ASSERT_TRUE(nodes.count(it));
         nodes.erase(it);
     }
@@ -45,10 +44,10 @@ TEST(GraphTheoryTests, DfsTest)
     ASSERT_EQ(nodes.size(), 0);
 }
 
-TEST(GraphTheoryTests, DfsCycleGraphTest)
+template<class _N, class _T>
+void cycleTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<std::string_view>{"A", "B", "C"};
-    auto graph = cppgraph::Graph<std::string_view>{};
 
     for (const auto& it : nodes)
         graph.addNode(it);
@@ -60,7 +59,7 @@ TEST(GraphTheoryTests, DfsCycleGraphTest)
     graph.addEdge("C", "A");
     graph.addEdge("C", "B");
 
-    for (const auto& it : graph.dfs()) {
+    for (const auto& it : traversal()) {
         ASSERT_TRUE(nodes.count(it));
         nodes.erase(it);
     }
@@ -68,18 +67,54 @@ TEST(GraphTheoryTests, DfsCycleGraphTest)
     ASSERT_EQ(nodes.size(), 0);
 }
 
-TEST(GraphTheoryTests, DfsOneNodeTest)
+template<class _N, class _T>
+void oneNodeTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<std::string_view>{"A"};
-    auto graph = cppgraph::Graph<std::string_view>{};
     graph.addNode("A");
 
-    for (const auto& it : graph.dfs()) {
+    for (const auto& it : traversal()) {
         ASSERT_TRUE(nodes.count(it));
         nodes.erase(it);
     }
 
     ASSERT_EQ(nodes.size(), 0);
+}
+
+TEST(GraphTheoryTests, DfsTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    travers(graph, [&graph]() { return graph.dfs(); });
+}
+
+TEST(GraphTheoryTests, DfsCycleGraphTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    cycleTravers(graph, [&graph]() { return graph.dfs(); });
+}
+
+TEST(GraphTheoryTests, DfsOneNodeTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    oneNodeTravers(graph, [&graph]() { return graph.dfs(); });
+}
+
+TEST(GraphTheoryTests, BfsTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    travers(graph, [&graph]() { return graph.bfs(); });
+}
+
+TEST(GraphTheoryTests, BfsCycleGraphTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    cycleTravers(graph, [&graph]() { return graph.bfs(); });
+}
+
+TEST(GraphTheoryTests, BfsOneNodeTest)
+{
+    auto graph = cppgraph::Graph<std::string_view>{};
+    oneNodeTravers(graph, [&graph]() { return graph.bfs(); });
 }
 
 } // namespace
