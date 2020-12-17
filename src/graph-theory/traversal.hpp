@@ -48,7 +48,7 @@ public:
         _Container<std::reference_wrapper<const _N>> _container;
     };
 
-    Traversal(const Graph<_N>& graph, const _N& start)
+    explicit Traversal(const Graph<_N>& graph, const _N& start) noexcept
         : _graph{graph}
         , _start{start}
     {

@@ -57,7 +57,7 @@ public:
         }
     };
 
-    Bfs(const Graph<_N>& graph, const _N& start)
+    explicit Bfs(const Graph<_N>& graph, const _N& start) noexcept
         : Traversal<_N, _Que>{graph, start}
     {
     }

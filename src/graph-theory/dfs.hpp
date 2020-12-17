@@ -56,7 +56,7 @@ public:
         }
     };
 
-    Dfs(const Graph<_N>& graph, const _N& start)
+    explicit Dfs(const Graph<_N>& graph, const _N& start) noexcept
         : Traversal<_N, std::stack>{graph, start}
     {
     }

@@ -14,18 +14,18 @@ template<class _N>
 class Edge
 {
 public:
-    Edge(const _N& node, double w)
+    constexpr explicit Edge(const _N& node, const double w)
         : _node{std::cref(node)}
         , _weight{w}
     {
     }
 
-    const _N& node() const noexcept
+    constexpr const _N& node() const noexcept
     {
         return _node.get();
     }
 
-    double weight() const noexcept
+    constexpr double weight() const noexcept
     {
         return _weight;
     }

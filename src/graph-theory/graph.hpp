@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <deque>
 #include <forward_list>
 #include <functional>
 #include <optional>
@@ -45,12 +44,12 @@ public:
         return Bfs{*this, _adjList.begin()->first};
     }
 
-    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt)
     {
         return bfs(start).begin();
     }
 
-    typename Bfs<_N>::Iterator bfsEnd() noexcept
+    typename Bfs<_N>::Iterator bfsEnd()
     {
         return bfs().end();
     }
@@ -63,12 +62,12 @@ public:
         return Dfs{*this, _adjList.begin()->first};
     }
 
-    typename Dfs<_N>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt) noexcept
+    typename Dfs<_N>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt)
     {
         return dfs(start).begin();
     }
 
-    typename Dfs<_N>::Iterator dfsEnd() noexcept
+    typename Dfs<_N>::Iterator dfsEnd()
     {
         return dfs().end();
     }
