@@ -23,7 +23,9 @@ class Graph
 {
 public:
     using BfsIterator = typename Bfs<_N>::Iterator;
-    using DfsIterator = typename Dfs<_N>::Iterator;
+
+    template<TraversalOrder Order>
+    using DfsIterator = typename Dfs<_N, Order>::Iterator;
 
     Graph()
         : _adjList{}
@@ -35,7 +37,7 @@ public:
         return _adjList;
     }
 
-    Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt)
+    Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
             return Bfs{*this, start.value()};
@@ -43,32 +45,35 @@ public:
         return Bfs{*this, _adjList.begin()->first};
     }
 
-    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt)
+    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt) const
     {
         return bfs(start).begin();
     }
 
-    typename Bfs<_N>::Iterator bfsEnd()
+    typename Bfs<_N>::Iterator bfsEnd() const
     {
         return bfs().end();
     }
 
-    Dfs<_N> dfs(const std::optional<_N>& start = std::nullopt)
+    template<TraversalOrder _Order = TraversalOrder::Pre>
+    Dfs<_N, _Order> dfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
-            return Dfs{*this, start.value()};
+            return Dfs<_N, _Order>{*this, start.value()};
 
-        return Dfs{*this, _adjList.begin()->first};
+        return Dfs<_N, _Order>{*this, _adjList.begin()->first};
     }
 
-    typename Dfs<_N>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt)
+    template<TraversalOrder _Order = TraversalOrder::Pre>
+    typename Dfs<_N, _Order>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt) const
     {
-        return dfs(start).begin();
+        return dfs<_Order>(start).begin();
     }
 
-    typename Dfs<_N>::Iterator dfsEnd()
+    template<TraversalOrder _Order = TraversalOrder::Pre>
+    typename Dfs<_N, _Order>::Iterator dfsEnd() const
     {
-        return dfs().end();
+        return dfs<_Order>().end();
     }
 
     void addNode(const _N& node)
