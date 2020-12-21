@@ -21,12 +21,6 @@ namespace cppgraph {
 template<class _N>
 class Graph
 {
-    template<class _T>
-    friend std::ostream& operator<<(std::ostream& out, const Graph<_T>& graph);
-
-    friend class Bfs<_N>::Iterator;
-    friend class Dfs<_N>::Iterator;
-
 public:
     using BfsIterator = typename Bfs<_N>::Iterator;
     using DfsIterator = typename Dfs<_N>::Iterator;
@@ -34,6 +28,11 @@ public:
     Graph()
         : _adjList{}
     {
+    }
+
+    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& adjList() const noexcept
+    {
+        return _adjList;
     }
 
     Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt)

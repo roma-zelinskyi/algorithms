@@ -39,7 +39,7 @@ public:
         {
             const auto& node = this->_container.front().get();
             this->_container.pop_front();
-            for (const auto& adj : this->_graph._adjList.at(node)) {
+            for (const auto& adj : this->_graph.adjList().at(node)) {
                 if (this->_visited.count(adj.node()))
                     continue;
 

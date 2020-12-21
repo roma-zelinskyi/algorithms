@@ -16,7 +16,7 @@ namespace cppgraph {
 template<class _N>
 std::ostream& operator<<(std::ostream& os, const cppgraph::Graph<_N>& graph)
 {
-    for (const auto& it : graph._adjList) {
+    for (const auto& it : graph.adjList()) {
         std::cout << it.first << "-> ";
         for (const auto& adj : it.second)
             std::cout << '[' << adj.node() << ',' << adj.weight() << ']' << ' ';

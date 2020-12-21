@@ -39,7 +39,7 @@ public:
         {
             const auto& node = this->_container.top().get();
             this->_container.pop();
-            for (const auto& adj : this->_graph._adjList.at(node)) {
+            for (const auto& adj : this->_graph.adjList().at(node)) {
                 if (!this->_visited.count(adj.node())) {
                     this->_visited.insert(adj.node());
                     this->_container.push(std::cref(adj.node()));
