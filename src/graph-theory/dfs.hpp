@@ -84,7 +84,7 @@ public:
 };
 
 template<class _N>
-class Dfs<_N, TraversalOrder::Post> : private Traversal<_N, std::stack>
+class Dfs<_N, TraversalOrder::Post> : private Traversal<_N, std::deque>
 {
 public:
     class Iterator : public Traversal<_N, std::deque>::IteratorBase
@@ -113,7 +113,7 @@ public:
             return node;
         }
 
-    private:
+    protected:
         void dfsRec(const _N& node)
         {
             if (this->_visited.count(node))
@@ -129,7 +129,7 @@ public:
     };
 
     explicit Dfs(const Graph<_N>& graph, const _N& start) noexcept
-        : Traversal<_N, std::stack>{graph, start}
+        : Traversal<_N, std::deque>{graph, start}
     {
     }
 
