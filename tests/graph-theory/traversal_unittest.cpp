@@ -18,7 +18,7 @@ namespace {
 template<class _N, class _T>
 void travers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
-    auto nodes = std::unordered_set<std::string_view>{"A", "B", "C", "D", "E", "F", "G"};
+    auto nodes = std::unordered_set<_N>{"A", "B", "C", "D", "E", "F", "G"};
 
     for (const auto& it : nodes)
         graph.addNode(it);
@@ -47,7 +47,7 @@ void travers(cppgraph::Graph<_N>& graph, _T&& traversal)
 template<class _N, class _T>
 void cycleTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
-    auto nodes = std::unordered_set<std::string_view>{"A", "B", "C"};
+    auto nodes = std::unordered_set<_N>{"A", "B", "C"};
 
     for (const auto& it : nodes)
         graph.addNode(it);
@@ -70,7 +70,7 @@ void cycleTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 template<class _N, class _T>
 void oneNodeTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 {
-    auto nodes = std::unordered_set<std::string_view>{"A"};
+    auto nodes = std::unordered_set<_N>{"A"};
     graph.addNode("A");
 
     for (const auto& it : traversal()) {
@@ -79,6 +79,30 @@ void oneNodeTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
     }
 
     ASSERT_EQ(nodes.size(), 0);
+}
+
+template<class _N, class _T>
+void traversFromNode(cppgraph::Graph<_N>& graph, _T&& traversal)
+{
+    auto nodes = std::unordered_set<_N>{1, 2, 3, 4, 5, 6};
+    auto expected = std::unordered_set<_N>{1, 2, 3};
+
+    for (const auto& it : nodes)
+        graph.addNode(it);
+
+    graph.addEdge(1, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(2, 4);
+    graph.addEdge(3, 4);
+    graph.addEdge(4, 5);
+    graph.addEdge(4, 6);
+
+    for (const auto& it : traversal()) {
+        ASSERT_TRUE(nodes.count(it));
+        nodes.erase(it);
+    }
+
+    ASSERT_EQ(nodes, expected);
 }
 
 TEST(GraphTheoryTests, DfsTest)
@@ -115,6 +139,18 @@ TEST(GraphTheoryTests, BfsOneNodeTest)
 {
     auto graph = cppgraph::Graph<std::string_view>{};
     oneNodeTravers(graph, [&graph]() { return graph.bfs(); });
+}
+
+TEST(GraphTheoryTests, BfsSelectedNode)
+{
+    auto graph = cppgraph::Graph<std::uint32_t>{};
+    traversFromNode(graph, [&graph]() { return graph.bfs(4); });
+}
+
+TEST(GraphTheoryTests, DfsSelectedNode)
+{
+    auto graph = cppgraph::Graph<std::uint32_t>{};
+    traversFromNode(graph, [&graph]() { return graph.dfs(4); });
 }
 
 } // namespace
