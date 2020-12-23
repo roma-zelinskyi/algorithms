@@ -40,7 +40,7 @@ public:
     Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
-            return Bfs{*this, start.value()};
+            return Bfs{*this, _adjList.find(start.value())->first};
 
         return Bfs{*this, _adjList.begin()->first};
     }
@@ -59,7 +59,7 @@ public:
     Dfs<_N, _Order> dfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
-            return Dfs<_N, _Order>{*this, start.value()};
+            return Dfs<_N, _Order>{*this, _adjList.find(start.value())->first};
 
         return Dfs<_N, _Order>{*this, _adjList.begin()->first};
     }
