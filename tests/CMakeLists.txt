@@ -8,6 +8,7 @@ add_executable(tests
     main.cpp 
     graph-theory/traversal_unittest.cpp 
     graph-theory/top_sort_unittest.cpp
+    graph-theory/sssp_dag_unittest.cpp
 )
 
 set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
