@@ -37,6 +37,11 @@ public:
         return _adjList;
     }
 
+    const std::forward_list<Edge<_N>>& adjacent(const _N& node) const noexcept
+    {
+        return _adjList.at(node);
+    }
+
     Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
@@ -89,15 +94,17 @@ public:
         if (!_adjList.count(src) || !_adjList.count(dest))
             throw std::invalid_argument{"No such node exist in graph"};
 
-        const auto& destNode = _adjList.find(dest)->first;
-        auto& srcNode = _adjList.at(src);
+        const auto& from = _adjList.find(src)->first;
+        const auto& to = _adjList.find(dest)->first;
+        auto& srcAdjacent = _adjList.at(src);
 
-        const auto res = std::find_if(srcNode.begin(), srcNode.end(), [&dest](const auto& edge) {
-            return edge.node() == dest;
-        });
+        const auto res =
+            std::find_if(srcAdjacent.begin(), srcAdjacent.end(), [&dest](const auto& edge) {
+                return edge.to() == dest;
+            });
 
-        if (res == std::end(srcNode))
-            srcNode.emplace_front(destNode, weight);
+        if (res == std::end(srcAdjacent))
+            srcAdjacent.emplace_front(from, to, weight);
     }
 
 private:

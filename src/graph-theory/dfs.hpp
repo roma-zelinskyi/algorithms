@@ -51,9 +51,9 @@ public:
             const auto& node = this->_container.top().get();
             this->_container.pop();
             for (const auto& adj : this->_graph.adjList().at(node)) {
-                if (!this->_visited.count(adj.node())) {
-                    this->_visited.insert(adj.node());
-                    this->_container.emplace(std::cref(adj.node()));
+                if (!this->_visited.count(adj.to())) {
+                    this->_visited.insert(adj.to());
+                    this->_container.emplace(std::cref(adj.to()));
                 }
             }
 
@@ -122,7 +122,7 @@ public:
             this->_visited.insert(node);
 
             for (const auto& it : this->_graph.adjList().at(node))
-                dfsRec(it.node());
+                dfsRec(it.to());
 
             this->_container.emplace_back(node);
         }

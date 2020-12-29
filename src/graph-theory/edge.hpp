@@ -14,15 +14,21 @@ template<class _N>
 class Edge
 {
 public:
-    constexpr explicit Edge(const _N& node, const double w)
-        : _node{std::cref(node)}
+    constexpr explicit Edge(const _N& src, const _N& dest, const double w)
+        : _src{std::cref(src)}
+        , _dest{std::cref(dest)}
         , _weight{w}
     {
     }
 
-    constexpr const _N& node() const noexcept
+    constexpr const _N& from() const noexcept
     {
-        return _node.get();
+        return _src.get();
+    }
+
+    constexpr const _N& to() const noexcept
+    {
+        return _dest.get();
     }
 
     constexpr double weight() const noexcept
@@ -31,7 +37,8 @@ public:
     }
 
 private:
-    std::reference_wrapper<const _N> _node;
+    std::reference_wrapper<const _N> _src;
+    std::reference_wrapper<const _N> _dest;
     double _weight;
 };
 

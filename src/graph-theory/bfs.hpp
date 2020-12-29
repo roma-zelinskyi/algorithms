@@ -40,11 +40,11 @@ public:
             const auto& node = this->_container.front().get();
             this->_container.pop_front();
             for (const auto& adj : this->_graph.adjList().at(node)) {
-                if (this->_visited.count(adj.node()))
+                if (this->_visited.count(adj.to()))
                     continue;
 
-                this->_visited.insert(adj.node());
-                this->_container.emplace_back(std::cref(adj.node()));
+                this->_visited.insert(adj.to());
+                this->_container.emplace_back(std::cref(adj.to()));
             }
 
             return *this;
