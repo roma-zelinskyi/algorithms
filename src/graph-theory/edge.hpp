@@ -36,6 +36,11 @@ public:
         return _weight;
     }
 
+    bool operator==(const Edge<_N>& rhs) const
+    {
+        return _src.get() == rhs._src.get() && _dest.get() == rhs._dest.get();
+    }
+
 private:
     std::reference_wrapper<const _N> _src;
     std::reference_wrapper<const _N> _dest;
