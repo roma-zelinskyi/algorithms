@@ -16,20 +16,20 @@ namespace cppgraph {
 template<class _N>
 class Graph;
 
-template<class _N, template<typename> class _Que = std::deque>
-class Bfs : private Traversal<_N, _Que>
+template<class _N>
+class Bfs : private Traversal<_N, std::deque>
 {
 public:
-    class Iterator : public Traversal<_N, _Que>::IteratorBase
+    class Iterator : public Traversal<_N, std::deque>::IteratorBase
     {
     public:
         explicit Iterator(const Graph<_N>& graph)
-            : Traversal<_N, _Que>::IteratorBase{graph}
+            : Traversal<_N, std::deque>::IteratorBase{graph}
         {
         }
 
         explicit Iterator(const Graph<_N>& graph, const _N& start)
-            : Traversal<_N, _Que>::IteratorBase{graph}
+            : Traversal<_N, std::deque>::IteratorBase{graph}
         {
             this->_visited.insert(start);
             this->_container.emplace_back(start);
@@ -58,7 +58,7 @@ public:
     };
 
     explicit Bfs(const Graph<_N>& graph, const _N& start) noexcept
-        : Traversal<_N, _Que>{graph, start}
+        : Traversal<_N, std::deque>{graph, start}
     {
     }
 
