@@ -18,7 +18,7 @@ namespace cppgraph {
 template<class _N>
 class Graph;
 
-template<class _N, template<typename> class _Container>
+template<class _N, template<typename...> class _Container>
 class Traversal
 {
 public:
