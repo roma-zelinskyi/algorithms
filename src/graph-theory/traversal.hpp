@@ -32,12 +32,12 @@ public:
         {
         }
 
-        bool operator==(const IteratorBase rhs) const
+        bool operator==(const IteratorBase& rhs) const
         {
             return _container.empty() == rhs._container.empty();
         }
 
-        bool operator!=(const IteratorBase rhs) const
+        bool operator!=(const IteratorBase& rhs) const
         {
             return !(*this == rhs);
         }

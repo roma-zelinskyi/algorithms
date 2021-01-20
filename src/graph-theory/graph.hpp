@@ -15,6 +15,7 @@
 #include "bfs.hpp"
 #include "dfs.hpp"
 #include "edge.hpp"
+#include "edge_iterator.hpp"
 
 namespace cppgraph {
 
@@ -26,11 +27,6 @@ public:
 
     template<TraversalOrder Order>
     using DfsIterator = typename Dfs<_N, Order>::Iterator;
-
-    Graph()
-        : _adjList{}
-    {
-    }
 
     const std::unordered_map<_N, std::forward_list<Edge<_N>>>& adjList() const noexcept
     {
@@ -79,6 +75,21 @@ public:
     typename Dfs<_N, _Order>::Iterator dfsEnd() const
     {
         return dfs<_Order>().end();
+    }
+
+    EdgeIterator<_N> edges()
+    {
+        return EdgeIterator<_N>(*this);
+    }
+
+    typename EdgeIterator<_N>::Iterator edgeBegin()
+    {
+        return edges().begin();
+    }
+
+    typename EdgeIterator<_N>::Iterator edgeEnd()
+    {
+        return edges().end();
     }
 
     void addNode(const _N& node)
