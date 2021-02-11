@@ -100,6 +100,11 @@ public:
         _adjList[node] = {};
     }
 
+    void addEdge(const Edge<_N>& edge)
+    {
+        addEdge(edge.from(), edge.to(), edge.weight());
+    }
+
     void addEdge(const _N& src, const _N& dest, double weight = 0)
     {
         if (!_adjList.count(src) || !_adjList.count(dest))

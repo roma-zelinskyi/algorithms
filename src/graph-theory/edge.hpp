@@ -15,20 +15,20 @@ class Edge
 {
 public:
     constexpr explicit Edge(const _N& src, const _N& dest, const double w)
-        : _src{std::cref(src)}
-        , _dest{std::cref(dest)}
+        : _src{src}
+        , _dest{dest}
         , _weight{w}
     {
     }
 
     constexpr const _N& from() const noexcept
     {
-        return _src.get();
+        return _src;
     }
 
     constexpr const _N& to() const noexcept
     {
-        return _dest.get();
+        return _dest;
     }
 
     constexpr double weight() const noexcept
@@ -38,12 +38,12 @@ public:
 
     bool operator==(const Edge<_N>& rhs) const
     {
-        return _src.get() == rhs._src.get() && _dest.get() == rhs._dest.get();
+        return _src == rhs._src && _dest == rhs._dest;
     }
 
 private:
-    std::reference_wrapper<const _N> _src;
-    std::reference_wrapper<const _N> _dest;
+    _N _src;
+    _N _dest;
     double _weight;
 };
 
