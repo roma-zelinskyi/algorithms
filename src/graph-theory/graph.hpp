@@ -77,19 +77,24 @@ public:
         return dfs<_Order>().end();
     }
 
-    EdgeIterator<_N> edges()
+    EdgeIterator<_N> edges() const
     {
         return EdgeIterator<_N>(*this);
     }
 
-    typename EdgeIterator<_N>::Iterator edgeBegin()
+    typename EdgeIterator<_N>::Iterator edgeBegin() const
     {
         return edges().begin();
     }
 
-    typename EdgeIterator<_N>::Iterator edgeEnd()
+    typename EdgeIterator<_N>::Iterator edgeEnd() const
     {
         return edges().end();
+    }
+
+    std::size_t vSize() const noexcept
+    {
+        return _adjList.size();
     }
 
     void addNode(const _N& node)
