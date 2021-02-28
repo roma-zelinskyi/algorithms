@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -20,7 +20,7 @@ enum class TraversalOrder : std::uint8_t
 };
 
 template<class _N>
-class Graph;
+class AdjacencyList;
 
 template<class _N, TraversalOrder Order>
 class Dfs : private Traversal<_N, std::stack>
@@ -34,12 +34,12 @@ public:
     class Iterator : public Traversal<_N, std::stack>::IteratorBase
     {
     public:
-        explicit Iterator(const Graph<_N>& graph)
+        explicit Iterator(const AdjacencyList<_N>& graph)
             : Traversal<_N, std::stack>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const Graph<_N>& graph, const _N& start)
+        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
             : Traversal<_N, std::stack>::IteratorBase{graph}
         {
             this->_visited.insert(start);
@@ -67,7 +67,7 @@ public:
         }
     };
 
-    explicit Dfs(const Graph<_N>& graph, const _N& start) noexcept
+    explicit Dfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
         : Traversal<_N, std::stack>{graph, start}
     {
     }
@@ -90,12 +90,12 @@ public:
     class Iterator : public Traversal<_N, std::deque>::IteratorBase
     {
     public:
-        explicit Iterator(const Graph<_N>& graph)
+        explicit Iterator(const AdjacencyList<_N>& graph)
             : Traversal<_N, std::deque>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const Graph<_N>& graph, const _N& start)
+        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
             : Traversal<_N, std::deque>::IteratorBase{graph}
         {
             dfsRec(start);
@@ -128,7 +128,7 @@ public:
         }
     };
 
-    explicit Dfs(const Graph<_N>& graph, const _N& start) noexcept
+    explicit Dfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
         : Traversal<_N, std::deque>{graph, start}
     {
     }

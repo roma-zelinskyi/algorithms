@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -11,12 +11,12 @@
 #include <string_view>
 #include <unordered_set>
 
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
 template<class _N, class _T>
-void travers(cppgraph::Graph<_N>& graph, _T&& traversal)
+void travers(cppgraph::AdjacencyList<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<_N>{"A", "B", "C", "D", "E", "F", "G"};
 
@@ -45,7 +45,7 @@ void travers(cppgraph::Graph<_N>& graph, _T&& traversal)
 }
 
 template<class _N, class _T>
-void cycleTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
+void cycleTravers(cppgraph::AdjacencyList<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<_N>{"A", "B", "C"};
 
@@ -68,7 +68,7 @@ void cycleTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 }
 
 template<class _N, class _T>
-void oneNodeTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
+void oneNodeTravers(cppgraph::AdjacencyList<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<_N>{"A"};
     graph.addNode("A");
@@ -82,7 +82,7 @@ void oneNodeTravers(cppgraph::Graph<_N>& graph, _T&& traversal)
 }
 
 template<class _N, class _T>
-void traversFromNode(cppgraph::Graph<_N>& graph, _T&& traversal)
+void traversFromNode(cppgraph::AdjacencyList<_N>& graph, _T&& traversal)
 {
     auto nodes = std::unordered_set<_N>{1, 2, 3, 4, 5, 6};
     auto expected = std::unordered_set<_N>{1, 2, 3};
@@ -105,51 +105,51 @@ void traversFromNode(cppgraph::Graph<_N>& graph, _T&& traversal)
     ASSERT_EQ(nodes, expected);
 }
 
-TEST(GraphTheoryTests, DfsTest)
+TEST(AdjacencyListTheoryTests, DfsTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     travers(graph, [&graph]() { return graph.dfs(); });
 }
 
-TEST(GraphTheoryTests, DfsCycleGraphTest)
+TEST(AdjacencyListTheoryTests, DfsCycleAdjacencyListTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     cycleTravers(graph, [&graph]() { return graph.dfs(); });
 }
 
-TEST(GraphTheoryTests, DfsOneNodeTest)
+TEST(AdjacencyListTheoryTests, DfsOneNodeTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     oneNodeTravers(graph, [&graph]() { return graph.dfs(); });
 }
 
-TEST(GraphTheoryTests, BfsTest)
+TEST(AdjacencyListTheoryTests, BfsTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     travers(graph, [&graph]() { return graph.bfs(); });
 }
 
-TEST(GraphTheoryTests, BfsCycleGraphTest)
+TEST(AdjacencyListTheoryTests, BfsCycleAdjacencyListTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     cycleTravers(graph, [&graph]() { return graph.bfs(); });
 }
 
-TEST(GraphTheoryTests, BfsOneNodeTest)
+TEST(AdjacencyListTheoryTests, BfsOneNodeTest)
 {
-    auto graph = cppgraph::Graph<std::string_view>{};
+    auto graph = cppgraph::AdjacencyList<std::string_view>{};
     oneNodeTravers(graph, [&graph]() { return graph.bfs(); });
 }
 
-TEST(GraphTheoryTests, BfsSelectedNode)
+TEST(AdjacencyListTheoryTests, BfsSelectedNode)
 {
-    auto graph = cppgraph::Graph<std::uint32_t>{};
+    auto graph = cppgraph::AdjacencyList<std::uint32_t>{};
     traversFromNode(graph, [&graph]() { return graph.bfs(4); });
 }
 
-TEST(GraphTheoryTests, DfsSelectedNode)
+TEST(AdjacencyListTheoryTests, DfsSelectedNode)
 {
-    auto graph = cppgraph::Graph<std::uint32_t>{};
+    auto graph = cppgraph::AdjacencyList<std::uint32_t>{};
     traversFromNode(graph, [&graph]() { return graph.dfs(4); });
 }
 

@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -11,13 +11,13 @@
 #include <iostream>
 #include <list>
 
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
-TEST(GraphTheoryTests, RangeBasedEdgeIteration)
+TEST(AdjacencyListTheoryTests, RangeBasedEdgeIteration)
 {
-    auto g = cppgraph::Graph<std::uint32_t>{};
+    auto g = cppgraph::AdjacencyList<std::uint32_t>{};
     g.addNode(0);
     g.addNode(1);
     g.addNode(2);

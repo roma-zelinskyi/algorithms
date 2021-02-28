@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -20,7 +20,7 @@
 namespace cppgraph {
 
 template<class _N>
-class Graph
+class AdjacencyList
 {
 public:
     using BfsIterator = typename Bfs<_N>::Iterator;

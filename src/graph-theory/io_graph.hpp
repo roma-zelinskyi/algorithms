@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -9,12 +9,12 @@
 #include <iostream>
 
 #include "edge.hpp"
-#include "graph.hpp"
+#include "adjacency_list.hpp"
 
 namespace cppgraph {
 
 template<class _N>
-std::ostream& operator<<(std::ostream& os, const cppgraph::Graph<_N>& graph)
+std::ostream& operator<<(std::ostream& os, const cppgraph::AdjacencyList<_N>& graph)
 {
     for (const auto& it : graph.data()) {
         std::cout << it.first << "-> ";

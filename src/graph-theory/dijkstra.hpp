@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -14,7 +14,7 @@
 #include <utility>
 
 #include "edge.hpp"
-#include "graph.hpp"
+#include "adjacency_list.hpp"
 
 namespace cppgraph {
 
@@ -35,7 +35,7 @@ reconstructDijkstraPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& p
 }
 
 template<class _N>
-std::vector<Edge<_N>> dijkstra(const Graph<_N>& graph, const _N& start, const _N& end)
+std::vector<Edge<_N>> dijkstra(const AdjacencyList<_N>& graph, const _N& start, const _N& end)
 {
     auto cmp = [](const std::pair<_N, double>& lhs, const std::pair<_N, double>& rhs) {
         return lhs.second > rhs.second;

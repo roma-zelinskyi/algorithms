@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -11,11 +11,11 @@
 #include <string_view>
 #include <unordered_set>
 
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
-TEST(GraphTheoryTests, TopSortTest)
+TEST(AdjacencyListTheoryTests, TopSortTest)
 {
     auto nodes = std::unordered_map<std::string_view, bool>{{"A", false},
                                                             {"B", false},
@@ -25,7 +25,7 @@ TEST(GraphTheoryTests, TopSortTest)
                                                             {"F", false},
                                                             {"G", false},
                                                             {"H", false}};
-    auto g = cppgraph::Graph<std::string_view>{};
+    auto g = cppgraph::AdjacencyList<std::string_view>{};
     for (const auto& it : nodes)
         g.addNode(it.first);
 
@@ -51,7 +51,7 @@ TEST(GraphTheoryTests, TopSortTest)
     }
 }
 
-TEST(GraphTheoryTests, TopSortNotConnectedNodeTest)
+TEST(AdjacencyListTheoryTests, TopSortNotConnectedNodeTest)
 {
     auto nodes = std::unordered_map<std::string_view, bool>{{"W", false},
                                                             {"B", false},
@@ -64,7 +64,7 @@ TEST(GraphTheoryTests, TopSortNotConnectedNodeTest)
                                                             {"J", false},
                                                             {"I", false},
                                                             {"A", false}};
-    auto g = cppgraph::Graph<std::string_view>{};
+    auto g = cppgraph::AdjacencyList<std::string_view>{};
     for (const auto& it : nodes)
         g.addNode(it.first);
 

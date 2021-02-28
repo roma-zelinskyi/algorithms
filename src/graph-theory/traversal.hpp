@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -16,7 +16,7 @@
 namespace cppgraph {
 
 template<class _N>
-class Graph;
+class AdjacencyList;
 
 template<class _N, template<typename...> class _Container>
 class Traversal
@@ -25,7 +25,7 @@ public:
     class IteratorBase
     {
     public:
-        explicit IteratorBase(const Graph<_N>& graph)
+        explicit IteratorBase(const AdjacencyList<_N>& graph)
             : _graph{graph}
             , _visited{}
             , _container{}
@@ -43,19 +43,19 @@ public:
         }
 
     protected:
-        const Graph<_N>& _graph;
+        const AdjacencyList<_N>& _graph;
         std::unordered_set<_N> _visited;
         _Container<std::reference_wrapper<const _N>> _container;
     };
 
-    explicit Traversal(const Graph<_N>& graph, const _N& start) noexcept
+    explicit Traversal(const AdjacencyList<_N>& graph, const _N& start) noexcept
         : _graph{graph}
         , _start{start}
     {
     }
 
 protected:
-    const Graph<_N>& _graph;
+    const AdjacencyList<_N>& _graph;
     const _N& _start;
 };
 

@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -12,13 +12,13 @@
 #include <unordered_set>
 
 #include "graph-theory/edge.hpp"
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
-TEST(GraphTheoryTests, BellmanFordNegativeCycleTest)
+TEST(AdjacencyListTheoryTests, BellmanFordNegativeCycleTest)
 {
-    auto g = cppgraph::Graph<std::shared_ptr<std::uint32_t>>{};
+    auto g = cppgraph::AdjacencyList<std::shared_ptr<std::uint32_t>>{};
 
     auto nodes = std::vector<std::shared_ptr<std::uint32_t>>(10, nullptr);
     for (auto i = 0u; i < 10; ++i)
@@ -57,9 +57,9 @@ TEST(GraphTheoryTests, BellmanFordNegativeCycleTest)
     ASSERT_EQ(res, expected);
 }
 
-TEST(GraphTheoryTests, BellmanFordNoNegativeCycleTest)
+TEST(AdjacencyListTheoryTests, BellmanFordNoNegativeCycleTest)
 {
-    auto g = cppgraph::Graph<std::shared_ptr<std::uint32_t>>{};
+    auto g = cppgraph::AdjacencyList<std::shared_ptr<std::uint32_t>>{};
 
     auto nodes = std::vector<std::shared_ptr<std::uint32_t>>(10, nullptr);
     for (auto i = 0u; i < 10; ++i)

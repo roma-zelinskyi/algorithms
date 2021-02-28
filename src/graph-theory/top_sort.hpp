@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "dfs.hpp"
-#include "graph.hpp"
+#include "adjacency_list.hpp"
 
 namespace cppgraph {
 
@@ -19,7 +19,7 @@ template<class _N>
 class DfsTopOrderIterator : private Dfs<_N, TraversalOrder::Post>::Iterator
 {
 public:
-    DfsTopOrderIterator(const Graph<_N>& graph)
+    DfsTopOrderIterator(const AdjacencyList<_N>& graph)
         : Dfs<_N, TraversalOrder::Post>::Iterator{graph}
     {
     }
@@ -44,7 +44,7 @@ public:
 };
 
 template<class _N>
-std::vector<_N> topSort(const Graph<_N>& graph)
+std::vector<_N> topSort(const AdjacencyList<_N>& graph)
 {
     return DfsTopOrderIterator<_N>{graph}.sort();
 }

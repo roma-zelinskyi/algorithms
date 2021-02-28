@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -12,18 +12,18 @@
 #include <string_view>
 
 #include "graph-theory/edge.hpp"
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
 using namespace std::literals;
 
-TEST(GraphTheoryTests, SsspDAGSimpleTest)
+TEST(AdjacencyListTheoryTests, SsspDAGSimpleTest)
 {
     const auto nodes =
         std::array<std::string_view, 8>{"A"sv, "B"sv, "C"sv, "D"sv, "E"sv, "F"sv, "G"sv, "H"sv};
 
-    auto g = cppgraph::Graph<std::string_view>{};
+    auto g = cppgraph::AdjacencyList<std::string_view>{};
     for (const auto& it : nodes)
         g.addNode(it);
 
@@ -52,12 +52,12 @@ TEST(GraphTheoryTests, SsspDAGSimpleTest)
     ASSERT_EQ(path, expectedPath);
 }
 
-TEST(GraphTheoryTests, SsspDAGComplexTest)
+TEST(AdjacencyListTheoryTests, SsspDAGComplexTest)
 {
     const auto nodes = std::array<std::string_view, 10>{
         "A"sv, "B"sv, "C"sv, "D"sv, "E"sv, "F"sv, "G"sv, "H"sv, "I"sv, "J"sv};
 
-    auto g = cppgraph::Graph<std::string_view>{};
+    auto g = cppgraph::AdjacencyList<std::string_view>{};
     for (const auto& it : nodes)
         g.addNode(it);
 

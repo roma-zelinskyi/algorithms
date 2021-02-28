@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "edge.hpp"
-#include "graph.hpp"
+#include "adjacency_list.hpp"
 #include "top_sort.hpp"
 
 namespace cppgraph {
@@ -36,7 +36,7 @@ reconstructPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& prev, con
 }
 
 template<class _N>
-std::vector<Edge<_N>> ssspDag(const Graph<_N>& graph, const _N& start, const _N& end)
+std::vector<Edge<_N>> ssspDag(const AdjacencyList<_N>& graph, const _N& start, const _N& end)
 {
     auto topOrder = topSort(graph);
     auto it = std::find(topOrder.begin(), topOrder.end(), start);

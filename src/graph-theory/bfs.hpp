@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -14,7 +14,7 @@
 namespace cppgraph {
 
 template<class _N>
-class Graph;
+class AdjacencyList;
 
 template<class _N>
 class Bfs : private Traversal<_N, std::deque>
@@ -23,12 +23,12 @@ public:
     class Iterator : public Traversal<_N, std::deque>::IteratorBase
     {
     public:
-        explicit Iterator(const Graph<_N>& graph)
+        explicit Iterator(const AdjacencyList<_N>& graph)
             : Traversal<_N, std::deque>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const Graph<_N>& graph, const _N& start)
+        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
             : Traversal<_N, std::deque>::IteratorBase{graph}
         {
             this->_visited.insert(start);
@@ -57,7 +57,7 @@ public:
         }
     };
 
-    explicit Bfs(const Graph<_N>& graph, const _N& start) noexcept
+    explicit Bfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
         : Traversal<_N, std::deque>{graph, start}
     {
     }

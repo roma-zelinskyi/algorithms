@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -11,12 +11,12 @@
 #include <unordered_map>
 
 #include "edge.hpp"
-#include "graph.hpp"
+#include "adjacency_list.hpp"
 
 namespace cppgraph {
 
 template<class _N>
-std::unordered_map<_N, double> bellmanFord(const Graph<_N>& graph, const _N& start)
+std::unordered_map<_N, double> bellmanFord(const AdjacencyList<_N>& graph, const _N& start)
 {
     auto dist = std::unordered_map<_N, double>{};
     for (const auto& it : graph.edges()) {

@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -13,17 +13,17 @@
 #include <unordered_set>
 
 #include "graph-theory/edge.hpp"
-#include "graph-theory/graph.hpp"
+#include "graph-theory/adjacency_list.hpp"
 
 namespace {
 
 using namespace std::literals;
 
-TEST(GraphTheoryTests, DijkstraNoCycleTest)
+TEST(AdjacencyListTheoryTests, DijkstraNoCycleTest)
 {
     const auto nodes = std::array<std::uint32_t, 5>{0, 1, 2, 3, 4};
 
-    auto g = cppgraph::Graph<std::uint32_t>{};
+    auto g = cppgraph::AdjacencyList<std::uint32_t>{};
     for (const auto& it : nodes)
         g.addNode(it);
 
@@ -44,12 +44,12 @@ TEST(GraphTheoryTests, DijkstraNoCycleTest)
     ASSERT_EQ(path, expectedPath);
 }
 
-TEST(GraphTheoryTests, DijkstraCycleTest)
+TEST(AdjacencyListTheoryTests, DijkstraCycleTest)
 {
     const auto nodes =
         std::array<std::uint32_t, 16>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-    auto g = cppgraph::Graph<std::uint32_t>{};
+    auto g = cppgraph::AdjacencyList<std::uint32_t>{};
     for (const auto& it : nodes)
         g.addNode(it);
 
@@ -99,11 +99,11 @@ TEST(GraphTheoryTests, DijkstraCycleTest)
     ASSERT_EQ(path2, expectedPathFrom0to15);
 }
 
-TEST(GraphTheoryTests, DijkstraUndirectedGraphTest)
+TEST(AdjacencyListTheoryTests, DijkstraUndirectedAdjacencyListTest)
 {
     const auto nodes = std::array<std::uint32_t, 6>{0, 1, 2, 3, 4, 5};
 
-    auto g = cppgraph::Graph<std::uint32_t>{};
+    auto g = cppgraph::AdjacencyList<std::uint32_t>{};
     for (const auto& it : nodes)
         g.addNode(it);
 
@@ -139,9 +139,9 @@ TEST(GraphTheoryTests, DijkstraUndirectedGraphTest)
 }
 
 template<class _N>
-cppgraph::Graph<_N> createGraph(const std::unordered_set<std::string_view>& nodes)
+cppgraph::AdjacencyList<_N> createAdjacencyList(const std::unordered_set<std::string_view>& nodes)
 {
-    auto g = cppgraph::Graph<std::string_view>{};
+    auto g = cppgraph::AdjacencyList<std::string_view>{};
     for (const auto& it : nodes)
         g.addNode(it);
 
@@ -211,14 +211,14 @@ cppgraph::Graph<_N> createGraph(const std::unordered_set<std::string_view>& node
     return g;
 }
 
-TEST(GraphTheoryTests, DijkstraPathFromNtoSTest)
+TEST(AdjacencyListTheoryTests, DijkstraPathFromNtoSTest)
 {
     const auto nodes = std::unordered_set<std::string_view>{
         "A"sv, "B"sv, "C"sv, "D"sv, "E"sv,  "F"sv,  "G"sv,  "H"sv,  "I"sv,  "J"sv, "K"sv,
         "L"sv, "M"sv, "N"sv, "O"sv, "P"sv,  "Q"sv,  "R"sv,  "S"sv,  "T"sv,  "U"sv, "V"sv,
         "W"sv, "X"sv, "Y"sv, "Z"sv, "AA"sv, "AB"sv, "AC"sv, "AD"sv, "AE"sv, "AH"sv};
 
-    const auto g = createGraph<std::string_view>(nodes);
+    const auto g = createAdjacencyList<std::string_view>(nodes);
 
     auto expectedPathFromNtoS = std::vector<cppgraph::Edge<std::string_view>>{
         cppgraph::Edge{*nodes.find("N"), *nodes.find("AB"), 6},
@@ -231,14 +231,14 @@ TEST(GraphTheoryTests, DijkstraPathFromNtoSTest)
     ASSERT_EQ(path, expectedPathFromNtoS);
 }
 
-TEST(GraphTheoryTests, DijkstraNoPathTest)
+TEST(AdjacencyListTheoryTests, DijkstraNoPathTest)
 {
     const auto nodes = std::unordered_set<std::string_view>{
         "A"sv, "B"sv, "C"sv, "D"sv, "E"sv,  "F"sv,  "G"sv,  "H"sv,  "I"sv,  "J"sv, "K"sv,
         "L"sv, "M"sv, "N"sv, "O"sv, "P"sv,  "Q"sv,  "R"sv,  "S"sv,  "T"sv,  "U"sv, "V"sv,
         "W"sv, "X"sv, "Y"sv, "Z"sv, "AA"sv, "AB"sv, "AC"sv, "AD"sv, "AE"sv, "AH"sv};
 
-    const auto g = createGraph<std::string_view>(nodes);
+    const auto g = createAdjacencyList<std::string_view>(nodes);
 
     const auto path = cppgraph::dijkstra(g, "N"sv, "Y"sv);
     ASSERT_TRUE(path.empty());

@@ -1,5 +1,5 @@
 /**
- *  Project  Graph
+ *  Project Graph Theory
  *
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
@@ -16,7 +16,7 @@
 namespace cppgraph {
 
 template<class _N>
-class Graph;
+class AdjacencyList;
 
 template<class _N>
 class EdgeIterator
@@ -80,7 +80,7 @@ public:
     };
 
 public:
-    EdgeIterator(const Graph<_N>& graph)
+    EdgeIterator(const AdjacencyList<_N>& graph)
         : _graph{graph}
     {
     }
@@ -100,7 +100,7 @@ public:
     }
 
 private:
-    const Graph<_N>& _graph;
+    const AdjacencyList<_N>& _graph;
 };
 
 } // namespace cppgraph
