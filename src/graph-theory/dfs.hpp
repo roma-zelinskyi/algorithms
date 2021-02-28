@@ -19,28 +19,28 @@ enum class TraversalOrder : std::uint8_t
     Post,
 };
 
-template<class _N>
+template<class _NodeDescriptor>
 class AdjacencyList;
 
-template<class _N, TraversalOrder Order>
-class Dfs : private Traversal<_N, std::stack>
+template<class _NodeDescriptor, TraversalOrder Order>
+class Dfs : private Traversal<_NodeDescriptor, std::stack>
 {
 };
 
-template<class _N>
-class Dfs<_N, TraversalOrder::Pre> : private Traversal<_N, std::stack>
+template<class _NodeDescriptor>
+class Dfs<_NodeDescriptor, TraversalOrder::Pre> : private Traversal<_NodeDescriptor, std::stack>
 {
 public:
-    class Iterator : public Traversal<_N, std::stack>::IteratorBase
+    class Iterator : public Traversal<_NodeDescriptor, std::stack>::IteratorBase
     {
     public:
-        explicit Iterator(const AdjacencyList<_N>& graph)
-            : Traversal<_N, std::stack>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph)
+            : Traversal<_NodeDescriptor, std::stack>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
-            : Traversal<_N, std::stack>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start)
+            : Traversal<_NodeDescriptor, std::stack>::IteratorBase{graph}
         {
             this->_visited.insert(start);
             this->_container.emplace(std::cref(start));
@@ -60,15 +60,15 @@ public:
             return *this;
         }
 
-        const _N& operator*()
+        const _NodeDescriptor& operator*()
         {
             const auto& node = this->_container.top().get();
             return node;
         }
     };
 
-    explicit Dfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
-        : Traversal<_N, std::stack>{graph, start}
+    explicit Dfs(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept
+        : Traversal<_NodeDescriptor, std::stack>{graph, start}
     {
     }
 
@@ -83,20 +83,20 @@ public:
     }
 };
 
-template<class _N>
-class Dfs<_N, TraversalOrder::Post> : private Traversal<_N, std::deque>
+template<class _NodeDescriptor>
+class Dfs<_NodeDescriptor, TraversalOrder::Post> : private Traversal<_NodeDescriptor, std::deque>
 {
 public:
-    class Iterator : public Traversal<_N, std::deque>::IteratorBase
+    class Iterator : public Traversal<_NodeDescriptor, std::deque>::IteratorBase
     {
     public:
-        explicit Iterator(const AdjacencyList<_N>& graph)
-            : Traversal<_N, std::deque>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph)
+            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
-            : Traversal<_N, std::deque>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start)
+            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
         {
             dfsRec(start);
         }
@@ -107,14 +107,14 @@ public:
             return *this;
         }
 
-        const _N& operator*()
+        const _NodeDescriptor& operator*()
         {
             const auto& node = this->_container.front().get();
             return node;
         }
 
     protected:
-        void dfsRec(const _N& node)
+        void dfsRec(const _NodeDescriptor& node)
         {
             if (this->_visited.count(node))
                 return;
@@ -128,8 +128,8 @@ public:
         }
     };
 
-    explicit Dfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
-        : Traversal<_N, std::deque>{graph, start}
+    explicit Dfs(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept
+        : Traversal<_NodeDescriptor, std::deque>{graph, start}
     {
     }
 

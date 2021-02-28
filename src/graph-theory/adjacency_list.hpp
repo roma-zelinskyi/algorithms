@@ -19,26 +19,26 @@
 
 namespace cppgraph {
 
-template<class _N>
+template<class _NodeDescriptor>
 class AdjacencyList
 {
 public:
-    using BfsIterator = typename Bfs<_N>::Iterator;
+    using BfsIterator = typename Bfs<_NodeDescriptor>::Iterator;
 
     template<TraversalOrder Order>
-    using DfsIterator = typename Dfs<_N, Order>::Iterator;
+    using DfsIterator = typename Dfs<_NodeDescriptor, Order>::Iterator;
 
-    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& data() const noexcept
+    const std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>& data() const noexcept
     {
         return _data;
     }
 
-    const std::forward_list<Edge<_N>>& adjacent(const _N& node) const noexcept
+    const std::forward_list<Edge<_NodeDescriptor>>& adjacent(const _NodeDescriptor& node) const noexcept
     {
         return _data.at(node);
     }
 
-    Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt) const
+    Bfs<_NodeDescriptor> bfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         if (start)
             return Bfs{*this, _data.find(start.value())->first};
@@ -46,48 +46,48 @@ public:
         return Bfs{*this, _data.begin()->first};
     }
 
-    typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt) const
+    typename Bfs<_NodeDescriptor>::Iterator bfsBegin(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         return bfs(start).begin();
     }
 
-    typename Bfs<_N>::Iterator bfsEnd() const
+    typename Bfs<_NodeDescriptor>::Iterator bfsEnd() const
     {
         return bfs().end();
     }
 
     template<TraversalOrder _Order = TraversalOrder::Pre>
-    Dfs<_N, _Order> dfs(const std::optional<_N>& start = std::nullopt) const
+    Dfs<_NodeDescriptor, _Order> dfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         if (start)
-            return Dfs<_N, _Order>{*this, _data.find(start.value())->first};
+            return Dfs<_NodeDescriptor, _Order>{*this, _data.find(start.value())->first};
 
-        return Dfs<_N, _Order>{*this, _data.begin()->first};
+        return Dfs<_NodeDescriptor, _Order>{*this, _data.begin()->first};
     }
 
     template<TraversalOrder _Order = TraversalOrder::Pre>
-    typename Dfs<_N, _Order>::Iterator dfsBegin(const std::optional<_N>& start = std::nullopt) const
+    typename Dfs<_NodeDescriptor, _Order>::Iterator dfsBegin(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         return dfs<_Order>(start).begin();
     }
 
     template<TraversalOrder _Order = TraversalOrder::Pre>
-    typename Dfs<_N, _Order>::Iterator dfsEnd() const
+    typename Dfs<_NodeDescriptor, _Order>::Iterator dfsEnd() const
     {
         return dfs<_Order>().end();
     }
 
-    EdgeIterator<_N> edges() const
+    EdgeIterator<_NodeDescriptor> edges() const
     {
-        return EdgeIterator<_N>(*this);
+        return EdgeIterator<_NodeDescriptor>(*this);
     }
 
-    typename EdgeIterator<_N>::Iterator edgeBegin() const
+    typename EdgeIterator<_NodeDescriptor>::Iterator edgeBegin() const
     {
         return edges().begin();
     }
 
-    typename EdgeIterator<_N>::Iterator edgeEnd() const
+    typename EdgeIterator<_NodeDescriptor>::Iterator edgeEnd() const
     {
         return edges().end();
     }
@@ -97,7 +97,7 @@ public:
         return _data.size();
     }
 
-    void addNode(const _N& node)
+    void addNode(const _NodeDescriptor& node)
     {
         if (_data.count(node))
             return;
@@ -105,12 +105,12 @@ public:
         _data[node] = {};
     }
 
-    void addEdge(const Edge<_N>& edge)
+    void addEdge(const Edge<_NodeDescriptor>& edge)
     {
         addEdge(edge.from(), edge.to(), edge.weight());
     }
 
-    void addEdge(const _N& src, const _N& dest, double weight = 0)
+    void addEdge(const _NodeDescriptor& src, const _NodeDescriptor& dest, double weight = 0)
     {
         if (!_data.count(src) || !_data.count(dest))
             throw std::invalid_argument{"No such node exist in graph"};
@@ -129,7 +129,7 @@ public:
     }
 
 private:
-    std::unordered_map<_N, std::forward_list<Edge<_N>>> _data;
+    std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>> _data;
 };
 
 } // namespace cppgraph

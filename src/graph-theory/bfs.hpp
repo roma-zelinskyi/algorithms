@@ -13,23 +13,23 @@
 
 namespace cppgraph {
 
-template<class _N>
+template<class _NodeDescriptor>
 class AdjacencyList;
 
-template<class _N>
-class Bfs : private Traversal<_N, std::deque>
+template<class _NodeDescriptor>
+class Bfs : private Traversal<_NodeDescriptor, std::deque>
 {
 public:
-    class Iterator : public Traversal<_N, std::deque>::IteratorBase
+    class Iterator : public Traversal<_NodeDescriptor, std::deque>::IteratorBase
     {
     public:
-        explicit Iterator(const AdjacencyList<_N>& graph)
-            : Traversal<_N, std::deque>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph)
+            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
         {
         }
 
-        explicit Iterator(const AdjacencyList<_N>& graph, const _N& start)
-            : Traversal<_N, std::deque>::IteratorBase{graph}
+        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start)
+            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
         {
             this->_visited.insert(start);
             this->_container.emplace_back(start);
@@ -50,15 +50,15 @@ public:
             return *this;
         }
 
-        const _N& operator*()
+        const _NodeDescriptor& operator*()
         {
             const auto& node = this->_container.front().get();
             return node;
         }
     };
 
-    explicit Bfs(const AdjacencyList<_N>& graph, const _N& start) noexcept
-        : Traversal<_N, std::deque>{graph, start}
+    explicit Bfs(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept
+        : Traversal<_NodeDescriptor, std::deque>{graph, start}
     {
     }
 

@@ -18,14 +18,14 @@
 
 namespace cppgraph {
 
-template<class _N>
-std::vector<Edge<_N>>
-reconstructPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& prev, const _N& end)
+template<class _NodeDescriptor>
+std::vector<Edge<_NodeDescriptor>>
+reconstructPath(const std::unordered_map<_NodeDescriptor, std::optional<Edge<_NodeDescriptor>>>& prev, const _NodeDescriptor& end)
 {
     if (!prev.count(end))
         return {};
 
-    auto res = std::vector<Edge<_N>>{};
+    auto res = std::vector<Edge<_NodeDescriptor>>{};
     for (auto it = prev.at(end); it != std::nullopt; it = prev.at(it.value().from())) {
         res.push_back(it.value());
     }
@@ -35,8 +35,8 @@ reconstructPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& prev, con
     return res;
 }
 
-template<class _N>
-std::vector<Edge<_N>> ssspDag(const AdjacencyList<_N>& graph, const _N& start, const _N& end)
+template<class _NodeDescriptor>
+std::vector<Edge<_NodeDescriptor>> ssspDag(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start, const _NodeDescriptor& end)
 {
     auto topOrder = topSort(graph);
     auto it = std::find(topOrder.begin(), topOrder.end(), start);
@@ -44,8 +44,8 @@ std::vector<Edge<_N>> ssspDag(const AdjacencyList<_N>& graph, const _N& start, c
     if (it == std::end(topOrder))
         return {};
 
-    auto prev = std::unordered_map<_N, std::optional<Edge<_N>>>{};
-    auto dist = std::unordered_map<_N, double>{};
+    auto prev = std::unordered_map<_NodeDescriptor, std::optional<Edge<_NodeDescriptor>>>{};
+    auto dist = std::unordered_map<_NodeDescriptor, double>{};
 
     dist.emplace(*it, 0);
     prev.emplace(graph.data().find(*it)->first, std::nullopt);

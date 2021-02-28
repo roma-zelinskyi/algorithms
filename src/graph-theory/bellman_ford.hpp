@@ -15,10 +15,10 @@
 
 namespace cppgraph {
 
-template<class _N>
-std::unordered_map<_N, double> bellmanFord(const AdjacencyList<_N>& graph, const _N& start)
+template<class _NodeDescriptor>
+std::unordered_map<_NodeDescriptor, double> bellmanFord(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start)
 {
-    auto dist = std::unordered_map<_N, double>{};
+    auto dist = std::unordered_map<_NodeDescriptor, double>{};
     for (const auto& it : graph.edges()) {
         dist[it.from()] = std::numeric_limits<double>::infinity();
         dist[it.to()] = std::numeric_limits<double>::infinity();

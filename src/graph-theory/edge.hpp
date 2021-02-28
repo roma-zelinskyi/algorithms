@@ -10,23 +10,23 @@
 
 namespace cppgraph {
 
-template<class _N>
+template<class _NodeDescriptor>
 class Edge
 {
 public:
-    constexpr explicit Edge(const _N& src, const _N& dest, const double w)
+    constexpr explicit Edge(const _NodeDescriptor& src, const _NodeDescriptor& dest, const double w)
         : _src{src}
         , _dest{dest}
         , _weight{w}
     {
     }
 
-    constexpr const _N& from() const noexcept
+    constexpr const _NodeDescriptor& from() const noexcept
     {
         return _src;
     }
 
-    constexpr const _N& to() const noexcept
+    constexpr const _NodeDescriptor& to() const noexcept
     {
         return _dest;
     }
@@ -36,14 +36,14 @@ public:
         return _weight;
     }
 
-    bool operator==(const Edge<_N>& rhs) const
+    bool operator==(const Edge<_NodeDescriptor>& rhs) const
     {
         return _src == rhs._src && _dest == rhs._dest;
     }
 
 private:
-    _N _src;
-    _N _dest;
+    _NodeDescriptor _src;
+    _NodeDescriptor _dest;
     double _weight;
 };
 

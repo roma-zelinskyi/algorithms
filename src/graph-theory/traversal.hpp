@@ -15,17 +15,17 @@
 
 namespace cppgraph {
 
-template<class _N>
+template<class _NodeDescriptor>
 class AdjacencyList;
 
-template<class _N, template<typename...> class _Container>
+template<class _NodeDescriptor, template<typename...> class _Container>
 class Traversal
 {
 public:
     class IteratorBase
     {
     public:
-        explicit IteratorBase(const AdjacencyList<_N>& graph)
+        explicit IteratorBase(const AdjacencyList<_NodeDescriptor>& graph)
             : _graph{graph}
             , _visited{}
             , _container{}
@@ -43,20 +43,20 @@ public:
         }
 
     protected:
-        const AdjacencyList<_N>& _graph;
-        std::unordered_set<_N> _visited;
-        _Container<std::reference_wrapper<const _N>> _container;
+        const AdjacencyList<_NodeDescriptor>& _graph;
+        std::unordered_set<_NodeDescriptor> _visited;
+        _Container<std::reference_wrapper<const _NodeDescriptor>> _container;
     };
 
-    explicit Traversal(const AdjacencyList<_N>& graph, const _N& start) noexcept
+    explicit Traversal(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept
         : _graph{graph}
         , _start{start}
     {
     }
 
 protected:
-    const AdjacencyList<_N>& _graph;
-    const _N& _start;
+    const AdjacencyList<_NodeDescriptor>& _graph;
+    const _NodeDescriptor& _start;
 };
 
 } // namespace cppgraph

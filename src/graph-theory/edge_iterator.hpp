@@ -15,10 +15,10 @@
 
 namespace cppgraph {
 
-template<class _N>
+template<class _NodeDescriptor>
 class AdjacencyList;
 
-template<class _N>
+template<class _NodeDescriptor>
 class EdgeIterator
 {
 public:
@@ -26,11 +26,11 @@ public:
     {
     public:
         Iterator(
-            const typename std::unordered_map<_N, std::forward_list<Edge<_N>>>::const_iterator&
+            const typename std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>::const_iterator&
                 columnStart,
-            const typename std::unordered_map<_N, std::forward_list<Edge<_N>>>::const_iterator&
+            const typename std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>::const_iterator&
                 columnEnd,
-            const typename std::forward_list<Edge<_N>>::const_iterator rowIterator)
+            const typename std::forward_list<Edge<_NodeDescriptor>>::const_iterator rowIterator)
             : _columnStart{columnStart}
             , _columnEnd{columnEnd}
             , _rowIterator{rowIterator}
@@ -46,7 +46,7 @@ public:
             return *this;
         }
 
-        const Edge<_N>& operator*() const noexcept
+        const Edge<_NodeDescriptor>& operator*() const noexcept
         {
             return *_rowIterator;
         }
@@ -74,13 +74,13 @@ public:
         }
 
     private:
-        typename std::unordered_map<_N, std::forward_list<Edge<_N>>>::const_iterator _columnStart;
-        typename std::unordered_map<_N, std::forward_list<Edge<_N>>>::const_iterator _columnEnd;
-        typename std::forward_list<Edge<_N>>::const_iterator _rowIterator;
+        typename std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>::const_iterator _columnStart;
+        typename std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>::const_iterator _columnEnd;
+        typename std::forward_list<Edge<_NodeDescriptor>>::const_iterator _rowIterator;
     };
 
 public:
-    EdgeIterator(const AdjacencyList<_N>& graph)
+    EdgeIterator(const AdjacencyList<_NodeDescriptor>& graph)
         : _graph{graph}
     {
     }
@@ -100,7 +100,7 @@ public:
     }
 
 private:
-    const AdjacencyList<_N>& _graph;
+    const AdjacencyList<_NodeDescriptor>& _graph;
 };
 
 } // namespace cppgraph

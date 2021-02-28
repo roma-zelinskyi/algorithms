@@ -13,8 +13,8 @@
 
 namespace cppgraph {
 
-template<class _N>
-std::ostream& operator<<(std::ostream& os, const cppgraph::AdjacencyList<_N>& graph)
+template<class _NodeDescriptor>
+std::ostream& operator<<(std::ostream& os, const cppgraph::AdjacencyList<_NodeDescriptor>& graph)
 {
     for (const auto& it : graph.data()) {
         std::cout << it.first << "-> ";

@@ -18,14 +18,14 @@
 
 namespace cppgraph {
 
-template<class _N>
-std::vector<Edge<_N>>
-reconstructDijkstraPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& prev, const _N& end)
+template<class _NodeDescriptor>
+std::vector<Edge<_NodeDescriptor>>
+reconstructDijkstraPath(const std::unordered_map<_NodeDescriptor, std::optional<Edge<_NodeDescriptor>>>& prev, const _NodeDescriptor& end)
 {
     if (!prev.count(end))
         return {};
 
-    auto res = std::vector<Edge<_N>>{};
+    auto res = std::vector<Edge<_NodeDescriptor>>{};
     for (auto it = prev.at(end); it != std::nullopt; it = prev.at(it.value().from()))
         res.push_back(it.value());
 
@@ -34,24 +34,24 @@ reconstructDijkstraPath(const std::unordered_map<_N, std::optional<Edge<_N>>>& p
     return res;
 }
 
-template<class _N>
-std::vector<Edge<_N>> dijkstra(const AdjacencyList<_N>& graph, const _N& start, const _N& end)
+template<class _NodeDescriptor>
+std::vector<Edge<_NodeDescriptor>> dijkstra(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start, const _NodeDescriptor& end)
 {
-    auto cmp = [](const std::pair<_N, double>& lhs, const std::pair<_N, double>& rhs) {
+    auto cmp = [](const std::pair<_NodeDescriptor, double>& lhs, const std::pair<_NodeDescriptor, double>& rhs) {
         return lhs.second > rhs.second;
     };
     auto que = std::
-        priority_queue<std::pair<_N, double>, std::vector<std::pair<_N, double>>, decltype(cmp)>{
+        priority_queue<std::pair<_NodeDescriptor, double>, std::vector<std::pair<_NodeDescriptor, double>>, decltype(cmp)>{
             cmp};
     que.emplace(start, 0);
 
-    auto dist = std::unordered_map<_N, double>{};
+    auto dist = std::unordered_map<_NodeDescriptor, double>{};
     dist[start] = 0;
 
-    auto prev = std::unordered_map<_N, std::optional<Edge<_N>>>{};
+    auto prev = std::unordered_map<_NodeDescriptor, std::optional<Edge<_NodeDescriptor>>>{};
     prev[graph.data().find(start)->first] = std::nullopt;
 
-    auto visited = std::unordered_set<_N>{};
+    auto visited = std::unordered_set<_NodeDescriptor>{};
     while (!que.empty()) {
         auto node = que.top();
         que.pop();

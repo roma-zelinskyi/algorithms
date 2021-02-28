@@ -15,18 +15,18 @@
 
 namespace cppgraph {
 
-template<class _N>
-class DfsTopOrderIterator : private Dfs<_N, TraversalOrder::Post>::Iterator
+template<class _NodeDescriptor>
+class DfsTopOrderIterator : private Dfs<_NodeDescriptor, TraversalOrder::Post>::Iterator
 {
 public:
-    DfsTopOrderIterator(const AdjacencyList<_N>& graph)
-        : Dfs<_N, TraversalOrder::Post>::Iterator{graph}
+    DfsTopOrderIterator(const AdjacencyList<_NodeDescriptor>& graph)
+        : Dfs<_NodeDescriptor, TraversalOrder::Post>::Iterator{graph}
     {
     }
 
-    std::vector<_N> sort()
+    std::vector<_NodeDescriptor> sort()
     {
-        auto topOrder = std::vector<_N>(this->_graph.data().size(), _N{});
+        auto topOrder = std::vector<_NodeDescriptor>(this->_graph.data().size(), _NodeDescriptor{});
         auto index = this->_graph.data().size() - 1;
         auto itEnd = DfsTopOrderIterator{this->_graph};
 
@@ -43,10 +43,10 @@ public:
     }
 };
 
-template<class _N>
-std::vector<_N> topSort(const AdjacencyList<_N>& graph)
+template<class _NodeDescriptor>
+std::vector<_NodeDescriptor> topSort(const AdjacencyList<_NodeDescriptor>& graph)
 {
-    return DfsTopOrderIterator<_N>{graph}.sort();
+    return DfsTopOrderIterator<_NodeDescriptor>{graph}.sort();
 }
 
 } // namespace cppgraph
