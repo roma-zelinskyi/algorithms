@@ -49,7 +49,7 @@ std::vector<Edge<_N>> dijkstra(const Graph<_N>& graph, const _N& start, const _N
     dist[start] = 0;
 
     auto prev = std::unordered_map<_N, std::optional<Edge<_N>>>{};
-    prev[graph.adjList().find(start)->first] = std::nullopt;
+    prev[graph.data().find(start)->first] = std::nullopt;
 
     auto visited = std::unordered_set<_N>{};
     while (!que.empty()) {

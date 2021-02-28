@@ -88,15 +88,15 @@ public:
     Iterator begin()
     {
         return Iterator(
-            _graph.adjList().begin(),
-            _graph.adjList().end(),
-            _graph.adjList().begin()->second.begin());
+            _graph.data().begin(),
+            _graph.data().end(),
+            _graph.data().begin()->second.begin());
     }
 
     Iterator end()
     {
         return Iterator(
-            _graph.adjList().end(), _graph.adjList().end(), _graph.adjList().end()->second.end());
+            _graph.data().end(), _graph.data().end(), _graph.data().end()->second.end());
     }
 
 private:

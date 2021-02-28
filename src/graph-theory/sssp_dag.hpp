@@ -48,7 +48,7 @@ std::vector<Edge<_N>> ssspDag(const Graph<_N>& graph, const _N& start, const _N&
     auto dist = std::unordered_map<_N, double>{};
 
     dist.emplace(*it, 0);
-    prev.emplace(graph.adjList().find(*it)->first, std::nullopt);
+    prev.emplace(graph.data().find(*it)->first, std::nullopt);
     while (it != std::end(topOrder)) {
         auto weight = dist.at(*it);
         for (const auto& adj : graph.adjacent(*it)) {

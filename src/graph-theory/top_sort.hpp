@@ -26,11 +26,11 @@ public:
 
     std::vector<_N> sort()
     {
-        auto topOrder = std::vector<_N>(this->_graph.adjList().size(), _N{});
-        auto index = this->_graph.adjList().size() - 1;
+        auto topOrder = std::vector<_N>(this->_graph.data().size(), _N{});
+        auto index = this->_graph.data().size() - 1;
         auto itEnd = DfsTopOrderIterator{this->_graph};
 
-        for (const auto& node : this->_graph.adjList()) {
+        for (const auto& node : this->_graph.data()) {
             this->dfsRec(node.first);
 
             for (; this->operator!=(itEnd); this->operator++()) {

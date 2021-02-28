@@ -28,22 +28,22 @@ public:
     template<TraversalOrder Order>
     using DfsIterator = typename Dfs<_N, Order>::Iterator;
 
-    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& adjList() const noexcept
+    const std::unordered_map<_N, std::forward_list<Edge<_N>>>& data() const noexcept
     {
-        return _adjList;
+        return _data;
     }
 
     const std::forward_list<Edge<_N>>& adjacent(const _N& node) const noexcept
     {
-        return _adjList.at(node);
+        return _data.at(node);
     }
 
     Bfs<_N> bfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
-            return Bfs{*this, _adjList.find(start.value())->first};
+            return Bfs{*this, _data.find(start.value())->first};
 
-        return Bfs{*this, _adjList.begin()->first};
+        return Bfs{*this, _data.begin()->first};
     }
 
     typename Bfs<_N>::Iterator bfsBegin(const std::optional<_N>& start = std::nullopt) const
@@ -60,9 +60,9 @@ public:
     Dfs<_N, _Order> dfs(const std::optional<_N>& start = std::nullopt) const
     {
         if (start)
-            return Dfs<_N, _Order>{*this, _adjList.find(start.value())->first};
+            return Dfs<_N, _Order>{*this, _data.find(start.value())->first};
 
-        return Dfs<_N, _Order>{*this, _adjList.begin()->first};
+        return Dfs<_N, _Order>{*this, _data.begin()->first};
     }
 
     template<TraversalOrder _Order = TraversalOrder::Pre>
@@ -94,15 +94,15 @@ public:
 
     std::size_t vSize() const noexcept
     {
-        return _adjList.size();
+        return _data.size();
     }
 
     void addNode(const _N& node)
     {
-        if (_adjList.count(node))
+        if (_data.count(node))
             return;
 
-        _adjList[node] = {};
+        _data[node] = {};
     }
 
     void addEdge(const Edge<_N>& edge)
@@ -112,12 +112,12 @@ public:
 
     void addEdge(const _N& src, const _N& dest, double weight = 0)
     {
-        if (!_adjList.count(src) || !_adjList.count(dest))
+        if (!_data.count(src) || !_data.count(dest))
             throw std::invalid_argument{"No such node exist in graph"};
 
-        const auto& from = _adjList.find(src)->first;
-        const auto& to = _adjList.find(dest)->first;
-        auto& srcAdjacent = _adjList.at(src);
+        const auto& from = _data.find(src)->first;
+        const auto& to = _data.find(dest)->first;
+        auto& srcAdjacent = _data.at(src);
 
         const auto res =
             std::find_if(srcAdjacent.begin(), srcAdjacent.end(), [&dest](const auto& edge) {
@@ -129,7 +129,7 @@ public:
     }
 
 private:
-    std::unordered_map<_N, std::forward_list<Edge<_N>>> _adjList;
+    std::unordered_map<_N, std::forward_list<Edge<_N>>> _data;
 };
 
 } // namespace cppgraph
