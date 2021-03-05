@@ -26,6 +26,17 @@ public:
     {
     }
 
+    const std::unordered_map<_NodeDescriptor, std::unordered_map<_NodeDescriptor, double>>&
+    data() const noexcept
+    {
+        return _matrix;
+    }
+
+    std::size_t size() const noexcept
+    {
+        return _matrix.size();
+    }
+
     void addNode(const _NodeDescriptor& node)
     {
         if (_prevAddedNode)
@@ -38,6 +49,8 @@ public:
 
         for (auto& it : _matrix.at(node))
             it.second = std::numeric_limits<double>::infinity();
+
+        _matrix[node][node] = 0;
 
         _prevAddedNode = node;
     }
