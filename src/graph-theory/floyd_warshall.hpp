@@ -18,8 +18,7 @@ class FloydWarshall
 {
 public:
     FloydWarshall(const cppgraph::AdjacencyMatrix<_NodeDescriptor>& graph)
-        : _graph{graph}
-        , _dp{graph.data()}
+        : _dp{graph.data()}
         , _prev{}
     {
         for (const auto& [rowKey, row] : _dp)
@@ -33,9 +32,9 @@ public:
     const std::unordered_map<_NodeDescriptor, std::unordered_map<_NodeDescriptor, double>>&
     solve() noexcept
     {
-        for (const auto& it : _graph.data()) {
+        for (const auto& it : _dp) {
             const auto k = it.first;
-            for (const auto& [i, row] : _graph.data()) {
+            for (const auto& [i, row] : _dp) {
                 for (auto& column : row) {
                     auto j = column.first;
                     const auto w = _dp[i][k] + _dp[k][j];
@@ -48,13 +47,12 @@ public:
         }
 
         // detect negative cycle
-        for (const auto& it : _graph.data()) {
+        for (const auto& it : _dp) {
             const auto k = it.first;
-            for (const auto& [i, row] : _graph.data()) {
+            for (const auto& [i, row] : _dp) {
                 for (auto& column : row) {
                     auto j = column.first;
-                    const auto w = _dp[i][k] + _dp[k][j];
-                    if (w < _dp[i][j]) {
+                    if (_dp[i][k] + _dp[k][j] < _dp[i][j]) {
                         _dp[i][j] = -std::numeric_limits<double>::infinity();
                         _prev[i][j] = std::nullopt;
                     }
@@ -89,7 +87,6 @@ public:
     }
 
 private:
-    const cppgraph::AdjacencyMatrix<_NodeDescriptor>& _graph;
     std::unordered_map<_NodeDescriptor, std::unordered_map<_NodeDescriptor, double>> _dp;
     std::unordered_map<
         _NodeDescriptor,
