@@ -24,9 +24,7 @@ class AdjacencyList
 {
 public:
     using BfsIterator = typename Bfs<_NodeDescriptor>::Iterator;
-
-    template<TraversalOrder Order>
-    using DfsIterator = typename Dfs<_NodeDescriptor, Order>::Iterator;
+    using DfsIterator = typename Dfs<_NodeDescriptor>::Iterator;
 
     const std::unordered_map<_NodeDescriptor, std::vector<DestinationEdge<_NodeDescriptor>>>&
     data() const noexcept
@@ -58,25 +56,23 @@ public:
         return bfs().end();
     }
 
-    template<TraversalOrder _Order = TraversalOrder::Pre>
-    Dfs<_NodeDescriptor, _Order> dfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
+    Dfs<_NodeDescriptor> dfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         if (start)
-            return Dfs<_NodeDescriptor, _Order>{*this, _adjList.find(start.value())->first};
+            return Dfs<_NodeDescriptor>{*this, _adjList.find(start.value())->first};
 
-        return Dfs<_NodeDescriptor, _Order>{*this, _adjList.begin()->first};
+        return Dfs<_NodeDescriptor>{*this, _adjList.begin()->first};
     }
 
-    template<TraversalOrder _Order = TraversalOrder::Pre>
-    typename Dfs<_NodeDescriptor, _Order>::Iterator dfsBegin(const std::optional<_NodeDescriptor>& start = std::nullopt) const
+    typename Dfs<_NodeDescriptor>::Iterator
+    dfsBegin(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
-        return dfs<_Order>(start).begin();
+        return dfs(start).begin();
     }
 
-    template<TraversalOrder _Order = TraversalOrder::Pre>
-    typename Dfs<_NodeDescriptor, _Order>::Iterator dfsEnd() const
+    typename Dfs<_NodeDescriptor>::Iterator dfsEnd() const
     {
-        return dfs<_Order>().end();
+        return dfs().end();
     }
 
     EdgeIterator<_NodeDescriptor> edges() const

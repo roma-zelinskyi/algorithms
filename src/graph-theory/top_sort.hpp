@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include <iostream>
 #include <optional>
 #include <vector>
 
@@ -17,31 +16,44 @@ namespace {
 
 template<class _NodeDescriptor>
 class DfsTopOrderIterator
-    : private cppgraph::Dfs<_NodeDescriptor, cppgraph::TraversalOrder::Post>::Iterator
 {
 public:
     DfsTopOrderIterator(const cppgraph::AdjacencyList<_NodeDescriptor>& graph)
-        : cppgraph::Dfs<_NodeDescriptor, cppgraph::TraversalOrder::Post>::Iterator{graph}
+        : _graph{graph}
+        , _order{graph.data().size(), _NodeDescriptor{}}
+        , _index{graph.data().size() - 1}
+        , _visited{}
     {
     }
 
     std::vector<_NodeDescriptor> sort()
     {
-        auto topOrder = std::vector<_NodeDescriptor>(this->_graph.data().size(), _NodeDescriptor{});
-        auto index = this->_graph.data().size() - 1;
-        auto itEnd = DfsTopOrderIterator{this->_graph};
+        for (const auto& node : this->_graph.data())
+            dfs(node.first);
 
-        for (const auto& node : this->_graph.data()) {
-            this->dfsRec(node.first);
-
-            for (; this->operator!=(itEnd); this->operator++()) {
-                topOrder[index] = this->operator*();
-                --index;
-            }
-        }
-
-        return topOrder;
+        return _order;
     }
+
+private:
+    void dfs(const _NodeDescriptor& node)
+    {
+        if (_visited.count(node))
+            return;
+
+        _visited.insert(node);
+
+        for (const auto& it : _graph.adjacent(node))
+            dfs(it.to());
+
+        _order[_index] = node;
+        --_index;
+    }
+
+private:
+    const cppgraph::AdjacencyList<_NodeDescriptor>& _graph;
+    std::vector<_NodeDescriptor> _order;
+    std::size_t _index;
+    std::unordered_set<_NodeDescriptor> _visited;
 };
 
 } // namespace

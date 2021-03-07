@@ -13,22 +13,12 @@
 
 namespace cppgraph {
 
-enum class TraversalOrder : std::uint8_t
-{
-    Pre,
-    Post,
-};
 
 template<class _NodeDescriptor>
 class AdjacencyList;
 
-template<class _NodeDescriptor, TraversalOrder Order>
-class Dfs : private Traversal<_NodeDescriptor, std::stack>
-{
-};
-
 template<class _NodeDescriptor>
-class Dfs<_NodeDescriptor, TraversalOrder::Pre> : private Traversal<_NodeDescriptor, std::stack>
+class Dfs : private Traversal<_NodeDescriptor, std::stack>
 {
 public:
     class Iterator : public Traversal<_NodeDescriptor, std::stack>::IteratorBase
@@ -43,17 +33,17 @@ public:
             : Traversal<_NodeDescriptor, std::stack>::IteratorBase{graph}
         {
             this->_visited.insert(start);
-            this->_container.emplace(std::cref(start));
+            this->_container.emplace(start);
         }
 
         Iterator& operator++()
         {
-            const auto& node = this->_container.top().get();
+            const auto& node = this->_container.top();
             this->_container.pop();
             for (const auto& adj : this->_graph.data().at(node)) {
                 if (!this->_visited.count(adj.to())) {
                     this->_visited.insert(adj.to());
-                    this->_container.emplace(std::cref(adj.to()));
+                    this->_container.emplace(adj.to());
                 }
             }
 
@@ -62,7 +52,7 @@ public:
 
         const _NodeDescriptor& operator*()
         {
-            const auto& node = this->_container.top().get();
+            const auto& node = this->_container.top();
             return node;
         }
     };
@@ -83,64 +73,4 @@ public:
     }
 };
 
-template<class _NodeDescriptor>
-class Dfs<_NodeDescriptor, TraversalOrder::Post> : private Traversal<_NodeDescriptor, std::deque>
-{
-public:
-    class Iterator : public Traversal<_NodeDescriptor, std::deque>::IteratorBase
-    {
-    public:
-        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph)
-            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
-        {
-        }
-
-        explicit Iterator(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start)
-            : Traversal<_NodeDescriptor, std::deque>::IteratorBase{graph}
-        {
-            dfsRec(start);
-        }
-
-        Iterator& operator++()
-        {
-            this->_container.pop_front();
-            return *this;
-        }
-
-        const _NodeDescriptor& operator*()
-        {
-            const auto& node = this->_container.front().get();
-            return node;
-        }
-
-    protected:
-        void dfsRec(const _NodeDescriptor& node)
-        {
-            if (this->_visited.count(node))
-                return;
-
-            this->_visited.insert(node);
-
-            for (const auto& it : this->_graph.data().at(node))
-                dfsRec(it.to());
-
-            this->_container.emplace_back(node);
-        }
-    };
-
-    explicit Dfs(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept
-        : Traversal<_NodeDescriptor, std::deque>{graph, start}
-    {
-    }
-
-    Iterator begin()
-    {
-        return Iterator{this->_graph, this->_start};
-    }
-
-    Iterator end()
-    {
-        return Iterator{this->_graph};
-    }
-};
 } // namespace cppgraph

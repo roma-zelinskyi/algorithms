@@ -45,7 +45,7 @@ public:
     protected:
         const AdjacencyList<_NodeDescriptor>& _graph;
         std::unordered_set<_NodeDescriptor> _visited;
-        _Container<std::reference_wrapper<const _NodeDescriptor>> _container;
+        _Container<_NodeDescriptor> _container;
     };
 
     explicit Traversal(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start) noexcept

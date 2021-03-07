@@ -37,14 +37,14 @@ public:
 
         Iterator& operator++()
         {
-            const auto& node = this->_container.front().get();
+            const auto& node = this->_container.front();
             this->_container.pop_front();
             for (const auto& adj : this->_graph.data().at(node)) {
                 if (this->_visited.count(adj.to()))
                     continue;
 
                 this->_visited.insert(adj.to());
-                this->_container.emplace_back(std::cref(adj.to()));
+                this->_container.emplace_back(adj.to());
             }
 
             return *this;
@@ -52,7 +52,7 @@ public:
 
         const _NodeDescriptor& operator*()
         {
-            const auto& node = this->_container.front().get();
+            const auto& node = this->_container.front();
             return node;
         }
     };
