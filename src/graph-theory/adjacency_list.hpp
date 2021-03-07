@@ -26,6 +26,13 @@ public:
     using BfsIterator = typename Bfs<_NodeDescriptor>::Iterator;
     using DfsIterator = typename Dfs<_NodeDescriptor>::Iterator;
 
+public:
+    AdjacencyList(bool isDirected = false)
+        : _adjList{}
+        , _isDirected{isDirected}
+    {
+    }
+
     const std::unordered_map<_NodeDescriptor, std::vector<DestinationEdge<_NodeDescriptor>>>&
     data() const noexcept
     {
@@ -113,17 +120,27 @@ public:
         if (!_adjList.count(from) || !_adjList.count(to))
             throw std::invalid_argument{"No such node exist in graph"};
 
-        auto& adjacent = _adjList.at(from);
+        auto add =
+            [this](const _NodeDescriptor& fromNode, const _NodeDescriptor& toNode, double w = 0) {
+                auto& adjacent = _adjList.at(fromNode);
 
-        const auto res = std::find_if(
-            adjacent.begin(), adjacent.end(), [&to](const auto& edge) { return edge.to() == to; });
+                const auto res =
+                    std::find_if(adjacent.begin(), adjacent.end(), [&toNode](const auto& edge) {
+                        return edge.to() == toNode;
+                    });
 
-        if (res == std::end(adjacent))
-            adjacent.emplace_back(to, weight);
+                if (res == std::end(adjacent))
+                    adjacent.emplace_back(toNode, w);
+            };
+
+        add(from, to, weight);
+        if (_isDirected)
+            add(to, from, weight);
     }
 
 private:
     std::unordered_map<_NodeDescriptor, std::vector<DestinationEdge<_NodeDescriptor>>> _adjList;
+    bool _isDirected;
 };
 
 } // namespace cppgraph
