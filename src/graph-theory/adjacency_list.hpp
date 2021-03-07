@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <forward_list>
 #include <functional>
 #include <optional>
 #include <stdexcept>
 #include <unordered_map>
+#include <vector>
 
 #include "bfs.hpp"
 #include "dfs.hpp"
@@ -28,22 +28,24 @@ public:
     template<TraversalOrder Order>
     using DfsIterator = typename Dfs<_NodeDescriptor, Order>::Iterator;
 
-    const std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>>& data() const noexcept
+    const std::unordered_map<_NodeDescriptor, std::vector<DestinationEdge<_NodeDescriptor>>>&
+    data() const noexcept
     {
-        return _data;
+        return _adjList;
     }
 
-    const std::forward_list<Edge<_NodeDescriptor>>& adjacent(const _NodeDescriptor& node) const noexcept
+    const std::vector<DestinationEdge<_NodeDescriptor>>& adjacent(const _NodeDescriptor& node) const
+        noexcept
     {
-        return _data.at(node);
+        return _adjList.at(node);
     }
 
     Bfs<_NodeDescriptor> bfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         if (start)
-            return Bfs{*this, _data.find(start.value())->first};
+            return Bfs{*this, _adjList.find(start.value())->first};
 
-        return Bfs{*this, _data.begin()->first};
+        return Bfs{*this, _adjList.begin()->first};
     }
 
     typename Bfs<_NodeDescriptor>::Iterator bfsBegin(const std::optional<_NodeDescriptor>& start = std::nullopt) const
@@ -60,9 +62,9 @@ public:
     Dfs<_NodeDescriptor, _Order> dfs(const std::optional<_NodeDescriptor>& start = std::nullopt) const
     {
         if (start)
-            return Dfs<_NodeDescriptor, _Order>{*this, _data.find(start.value())->first};
+            return Dfs<_NodeDescriptor, _Order>{*this, _adjList.find(start.value())->first};
 
-        return Dfs<_NodeDescriptor, _Order>{*this, _data.begin()->first};
+        return Dfs<_NodeDescriptor, _Order>{*this, _adjList.begin()->first};
     }
 
     template<TraversalOrder _Order = TraversalOrder::Pre>
@@ -94,15 +96,15 @@ public:
 
     std::size_t vSize() const noexcept
     {
-        return _data.size();
+        return _adjList.size();
     }
 
     void addNode(const _NodeDescriptor& node)
     {
-        if (_data.count(node))
+        if (_adjList.count(node))
             return;
 
-        _data[node] = {};
+        _adjList[node] = {};
     }
 
     void addEdge(const Edge<_NodeDescriptor>& edge)
@@ -110,26 +112,22 @@ public:
         addEdge(edge.from(), edge.to(), edge.weight());
     }
 
-    void addEdge(const _NodeDescriptor& src, const _NodeDescriptor& dest, double weight = 0)
+    void addEdge(const _NodeDescriptor& from, const _NodeDescriptor& to, double weight = 0)
     {
-        if (!_data.count(src) || !_data.count(dest))
+        if (!_adjList.count(from) || !_adjList.count(to))
             throw std::invalid_argument{"No such node exist in graph"};
 
-        const auto& from = _data.find(src)->first;
-        const auto& to = _data.find(dest)->first;
-        auto& srcAdjacent = _data.at(src);
+        auto& adjacent = _adjList.at(from);
 
-        const auto res =
-            std::find_if(srcAdjacent.begin(), srcAdjacent.end(), [&dest](const auto& edge) {
-                return edge.to() == dest;
-            });
+        const auto res = std::find_if(
+            adjacent.begin(), adjacent.end(), [&to](const auto& edge) { return edge.to() == to; });
 
-        if (res == std::end(srcAdjacent))
-            srcAdjacent.emplace_front(from, to, weight);
+        if (res == std::end(adjacent))
+            adjacent.emplace_back(to, weight);
     }
 
 private:
-    std::unordered_map<_NodeDescriptor, std::forward_list<Edge<_NodeDescriptor>>> _data;
+    std::unordered_map<_NodeDescriptor, std::vector<DestinationEdge<_NodeDescriptor>>> _adjList;
 };
 
 } // namespace cppgraph

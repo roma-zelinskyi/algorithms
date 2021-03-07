@@ -10,8 +10,8 @@
 #include <limits>
 #include <unordered_map>
 
-#include "edge.hpp"
 #include "adjacency_list.hpp"
+#include "edge.hpp"
 
 namespace cppgraph {
 
@@ -41,6 +41,7 @@ std::unordered_map<_NodeDescriptor, double> bellmanFord(const AdjacencyList<_Nod
                 dist[edge.to()] = -std::numeric_limits<double>::infinity();
         }
     }
+
 
     return dist;
 }

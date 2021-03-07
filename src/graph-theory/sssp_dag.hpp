@@ -57,7 +57,7 @@ std::vector<Edge<_NodeDescriptor>> ssspDag(const AdjacencyList<_NodeDescriptor>&
 
             if (weight + adj.weight() < dist.at(adj.to())) {
                 dist[adj.to()] = weight + adj.weight();
-                prev[adj.to()] = adj;
+                prev[adj.to()] = Edge<_NodeDescriptor>{*it, adj.to(), weight};
             }
         }
 

@@ -62,17 +62,17 @@ std::vector<Edge<_NodeDescriptor>> dijkstra(const AdjacencyList<_NodeDescriptor>
 
         auto weight = node.second;
 
-        for (const auto& it : graph.adjacent(node.first)) {
-            if (visited.count(it.to()))
+        for (const auto& adj : graph.adjacent(node.first)) {
+            if (visited.count(adj.to()))
                 continue;
 
-            if (!dist.count(it.to()))
-                dist[it.to()] = std::numeric_limits<double>::infinity();
+            if (!dist.count(adj.to()))
+                dist[adj.to()] = std::numeric_limits<double>::infinity();
 
-            if (weight + it.weight() < dist.at(it.to())) {
-                dist[it.to()] = weight + it.weight();
-                prev[it.to()] = it;
-                que.emplace(it.to(), dist.at(it.to()));
+            if (weight + adj.weight() < dist.at(adj.to())) {
+                dist[adj.to()] = weight + adj.weight();
+                prev[adj.to()] = Edge<_NodeDescriptor>{node.first, adj.to(), adj.weight()};
+                que.emplace(adj.to(), dist.at(adj.to()));
             }
         }
 
