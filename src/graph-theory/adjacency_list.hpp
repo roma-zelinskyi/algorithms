@@ -27,7 +27,7 @@ public:
     using DfsIterator = typename Dfs<_NodeDescriptor>::Iterator;
 
 public:
-    AdjacencyList(bool isDirected = false)
+    AdjacencyList(bool isDirected = true)
         : _adjList{}
         , _isDirected{isDirected}
     {
@@ -134,7 +134,7 @@ public:
             };
 
         add(from, to, weight);
-        if (_isDirected)
+        if (!_isDirected)
             add(to, from, weight);
     }
 
