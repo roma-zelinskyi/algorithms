@@ -13,14 +13,15 @@
 #include "dfs.hpp"
 #include "adjacency_list.hpp"
 
-namespace cppgraph {
+namespace {
 
 template<class _NodeDescriptor>
-class DfsTopOrderIterator : private Dfs<_NodeDescriptor, TraversalOrder::Post>::Iterator
+class DfsTopOrderIterator
+    : private cppgraph::Dfs<_NodeDescriptor, cppgraph::TraversalOrder::Post>::Iterator
 {
 public:
-    DfsTopOrderIterator(const AdjacencyList<_NodeDescriptor>& graph)
-        : Dfs<_NodeDescriptor, TraversalOrder::Post>::Iterator{graph}
+    DfsTopOrderIterator(const cppgraph::AdjacencyList<_NodeDescriptor>& graph)
+        : cppgraph::Dfs<_NodeDescriptor, cppgraph::TraversalOrder::Post>::Iterator{graph}
     {
     }
 
@@ -42,6 +43,10 @@ public:
         return topOrder;
     }
 };
+
+} // namespace
+
+namespace cppgraph {
 
 template<class _NodeDescriptor>
 std::vector<_NodeDescriptor> topSort(const AdjacencyList<_NodeDescriptor>& graph)

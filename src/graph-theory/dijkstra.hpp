@@ -16,16 +16,17 @@
 #include "edge.hpp"
 #include "adjacency_list.hpp"
 
-namespace cppgraph {
+namespace {
 
 template<class _NodeDescriptor>
-std::vector<Edge<_NodeDescriptor>>
-reconstructDijkstraPath(const std::unordered_map<_NodeDescriptor, std::optional<Edge<_NodeDescriptor>>>& prev, const _NodeDescriptor& end)
+std::vector<cppgraph::Edge<_NodeDescriptor>> reconstructDijkstraPath(
+    const std::unordered_map<_NodeDescriptor, std::optional<cppgraph::Edge<_NodeDescriptor>>>& prev,
+    const _NodeDescriptor& end)
 {
     if (!prev.count(end))
         return {};
 
-    auto res = std::vector<Edge<_NodeDescriptor>>{};
+    auto res = std::vector<cppgraph::Edge<_NodeDescriptor>>{};
     for (auto it = prev.at(end); it != std::nullopt; it = prev.at(it.value().from()))
         res.push_back(it.value());
 
@@ -33,6 +34,10 @@ reconstructDijkstraPath(const std::unordered_map<_NodeDescriptor, std::optional<
 
     return res;
 }
+
+} // namespace
+
+namespace cppgraph {
 
 template<class _NodeDescriptor>
 std::vector<Edge<_NodeDescriptor>> dijkstra(const AdjacencyList<_NodeDescriptor>& graph, const _NodeDescriptor& start, const _NodeDescriptor& end)
