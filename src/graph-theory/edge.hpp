@@ -16,7 +16,8 @@ template<class _NodeDescriptor>
 class Edge : public DestinationEdge<_NodeDescriptor>
 {
 public:
-    constexpr explicit Edge(const _NodeDescriptor& from, const _NodeDescriptor& to, const double w)
+    constexpr explicit Edge(
+        const _NodeDescriptor& from, const _NodeDescriptor& to, const double w = 0)
         : DestinationEdge<_NodeDescriptor>{to, w}
         , _from{from}
     {

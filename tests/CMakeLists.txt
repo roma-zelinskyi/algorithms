@@ -11,7 +11,8 @@ add_executable(
   graph-theory/dijkstra_unittest.cpp
   graph-theory/bellman_ford_unittest.cpp
   graph-theory/edge_iterator_unittest.cpp
-  graph-theory/floyd_warshall_unittest.cpp)
+  graph-theory/floyd_warshall_unittest.cpp
+  graph-theory/find_bridges.cpp)
 
 set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                        ${CMAKE_BINARY_DIR}/tests)
