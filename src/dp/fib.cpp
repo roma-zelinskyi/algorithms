@@ -35,9 +35,6 @@ std::uint32_t fib(const std::uint32_t num)
 
     auto f = fibMemo(memo, num);
 
-    for (const auto& [k, v] : memo)
-        std::cout << k << ' ' << v << '\n';
-
     return f;
 }
 

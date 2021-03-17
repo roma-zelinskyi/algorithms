@@ -2,7 +2,7 @@
 #
 # @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
 
-add_executable(dp-tests fib_unittest.cpp)
+add_executable(dp-tests fib_unittest.cpp grid_traveler_unittest.cpp)
 
 set_target_properties(dp-tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                        ${CMAKE_BINARY_DIR}/tests)
