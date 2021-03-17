@@ -13,3 +13,4 @@ set_target_properties(tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY
                                        ${CMAKE_BINARY_DIR}/tests)
 
 add_subdirectory(graph-theory)
+add_subdirectory(dp)
