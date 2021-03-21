@@ -18,4 +18,9 @@ target_include_directories(graph-theory-tests PRIVATE ${GTEST_INCLUDE_DIRS}
 
 target_link_libraries(graph-theory-tests PRIVATE GTest::GTest GTest::Main pthread)
 
-add_dependencies(tests graph-theory-tests)
+set_target_properties(graph-theory-tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                       ${CMAKE_BINARY_DIR}/tests)
+add_test(
+    NAME graph-theory-tests
+    COMMAND graph-theory-tests
+)
