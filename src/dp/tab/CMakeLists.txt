@@ -2,5 +2,4 @@
 #
 # @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
 
-add_subdirectory(memo)
-add_subdirectory(tab)
+add_library(dp-tab STATIC fib.cpp)
