@@ -12,10 +12,10 @@ namespace {
 
 TEST(DynamicProgrammingTests, FibTest)
 {
-    EXPECT_EQ(5, zee::fib(5));
-    EXPECT_EQ(13, zee::fib(7));
-    EXPECT_EQ(6765, zee::fib(20));
-    EXPECT_EQ(17711, zee::fib(22));
+    EXPECT_EQ(5, dp::memo::fib(5));
+    EXPECT_EQ(13, dp::memo::fib(7));
+    EXPECT_EQ(6765, dp::memo::fib(20));
+    EXPECT_EQ(17711, dp::memo::fib(22));
 }
 
 } // namespace

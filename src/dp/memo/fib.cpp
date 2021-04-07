@@ -27,7 +27,7 @@ fibMemo(std::unordered_map<std::uint32_t, std::uint32_t>& memo, const std::uint3
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 std::uint32_t fib(const std::uint32_t num)
 {
@@ -38,5 +38,5 @@ std::uint32_t fib(const std::uint32_t num)
     return f;
 }
 
-} // namespace zee
+} // namespace dp::memo
 

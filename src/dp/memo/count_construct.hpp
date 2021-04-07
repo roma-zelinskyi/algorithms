@@ -10,11 +10,11 @@
 #include <string>
 #include <vector>
 
-namespace zee {
+namespace dp::memo {
 
 std::uint32_t countConstruct(const std::string& target, const std::vector<std::string>& wordBank);
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

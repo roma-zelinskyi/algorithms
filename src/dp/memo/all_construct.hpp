@@ -11,12 +11,12 @@
 #include <string>
 #include <vector>
 
-namespace zee {
+namespace dp::memo {
 
 std::forward_list<std::forward_list<std::string>>
 allConstruct(const std::string& target, const std::vector<std::string>& wordBank);
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

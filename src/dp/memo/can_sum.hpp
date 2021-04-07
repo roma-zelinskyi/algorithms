@@ -9,10 +9,10 @@
 #include <cstdint>
 #include <vector>
 
-namespace zee {
+namespace dp::memo {
 
 bool canSum(int num, const std::vector<int>& arr);
 
-} // namespace zee
+} // namespace dp::memo
 
 

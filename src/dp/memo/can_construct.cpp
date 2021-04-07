@@ -36,7 +36,7 @@ bool canConstructMemo(
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 bool canConstruct(const std::string& target, const std::vector<std::string>& wordBank)
 {
@@ -44,7 +44,7 @@ bool canConstruct(const std::string& target, const std::vector<std::string>& wor
     return canConstructMemo(memo, target, wordBank);
 }
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

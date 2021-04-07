@@ -19,19 +19,19 @@ TEST(DynamicProgrammingTests, AllConstructTest)
     auto expected1 = std::forward_list<std::forward_list<std::string>>{
         {"abcd", "ef"}, {"abc", "def"}, {"ab", "cd", "ef"}, {"ab", "c", "def"}};
     EXPECT_EQ(
-        expected1, zee::allConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
+        expected1, dp::memo::allConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
 
     EXPECT_EQ(
         std::forward_list<std::forward_list<std::string>>{},
-        zee::allConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+        dp::memo::allConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
 
     auto expected2 =
         std::forward_list<std::forward_list<std::string>>{{"p", "ur", "p", "le"}, {"purp", "le"}};
 
-    EXPECT_EQ(expected2, zee::allConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
+    EXPECT_EQ(expected2, dp::memo::allConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
     EXPECT_EQ(
         std::forward_list<std::forward_list<std::string>>{},
-        zee::allConstruct(
+        dp::memo::allConstruct(
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
             {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }

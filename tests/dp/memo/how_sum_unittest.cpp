@@ -16,12 +16,12 @@ namespace {
 TEST(DynamicProgrammingTests, HowSumTest)
 {
     auto expected1 = std::vector{4, 4};
-    EXPECT_EQ(expected1, zee::howSum(8, {4, 2, 8}));
+    EXPECT_EQ(expected1, dp::memo::howSum(8, {4, 2, 8}));
 
     auto expected2 = std::vector{4, 3};
-    EXPECT_EQ(expected2, zee::howSum(7, {5, 3, 4, 7}));
+    EXPECT_EQ(expected2, dp::memo::howSum(7, {5, 3, 4, 7}));
 
-    EXPECT_EQ(std::vector<int>{}, zee::howSum(300, {7, 14}));
+    EXPECT_EQ(std::vector<int>{}, dp::memo::howSum(300, {7, 14}));
 }
 
 } // namespace

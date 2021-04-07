@@ -42,7 +42,7 @@ std::forward_list<std::forward_list<std::string>> allConstructMemo(
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 std::forward_list<std::forward_list<std::string>>
 allConstruct(const std::string& target, const std::vector<std::string>& wordBank)
@@ -53,7 +53,7 @@ allConstruct(const std::string& target, const std::vector<std::string>& wordBank
     return allConstructMemo(memo, target, wordBank);
 }
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

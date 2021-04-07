@@ -57,7 +57,7 @@ std::uint32_t gridTravelerMemo(
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 std::uint32_t gridTraveler(const std::uint32_t n, const std::uint32_t m)
 {
@@ -66,6 +66,6 @@ std::uint32_t gridTraveler(const std::uint32_t n, const std::uint32_t m)
     return gridTravelerMemo(memo, n, m);
 }
 
-} // namespace zee
+} // namespace dp::memo
 
 

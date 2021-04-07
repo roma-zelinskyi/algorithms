@@ -33,7 +33,7 @@ std::uint32_t countConstructMemo(
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 std::uint32_t countConstruct(const std::string& target, const std::vector<std::string>& wordBank)
 {
@@ -41,7 +41,7 @@ std::uint32_t countConstruct(const std::string& target, const std::vector<std::s
     return countConstructMemo(memo, target, wordBank);
 }
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

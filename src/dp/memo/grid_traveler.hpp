@@ -8,10 +8,10 @@
 
 #include <cstdint>
 
-namespace zee {
+namespace dp::memo {
 
 std::uint32_t gridTraveler(std::uint32_t n, std::uint32_t m);
 
-} // namespace zee
+} // namespace dp::memo
 
 

@@ -32,7 +32,7 @@ bool canSumMemo(std::unordered_map<int, bool>& memo, const int num, const std::v
 
 } // namespace
 
-namespace zee {
+namespace dp::memo {
 
 bool canSum(const int num, const std::vector<int>& arr)
 {
@@ -40,5 +40,5 @@ bool canSum(const int num, const std::vector<int>& arr)
     return canSumMemo(memo, num, arr);
 }
 
-} // namespace zee
+} // namespace dp::memo
 

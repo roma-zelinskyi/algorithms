@@ -14,9 +14,9 @@ namespace {
 
 TEST(DynamicProgrammingTests, CanSumTest)
 {
-    EXPECT_TRUE(zee::canSum(7, {5, 3, 4, 7}));
-    EXPECT_FALSE(zee::canSum(7, {2, 4, 2}));
-    EXPECT_FALSE(zee::canSum(30000, {7, 14, 21}));
+    EXPECT_TRUE(dp::memo::canSum(7, {5, 3, 4, 7}));
+    EXPECT_FALSE(dp::memo::canSum(7, {2, 4, 2}));
+    EXPECT_FALSE(dp::memo::canSum(30000, {7, 14, 21}));
 }
 
 } // namespace

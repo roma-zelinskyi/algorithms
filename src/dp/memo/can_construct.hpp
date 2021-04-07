@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
-namespace zee {
+namespace dp::memo {
 
 bool canConstruct(const std::string& target, const std::vector<std::string>& wordBank);
 
-} // namespace zee
+} // namespace dp::memo
 
 
 

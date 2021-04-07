@@ -14,10 +14,10 @@ namespace {
 
 TEST(DynamicProgrammingTests, CanConstructTest)
 {
-    EXPECT_TRUE(zee::canConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
-    EXPECT_FALSE(zee::canConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
-    EXPECT_TRUE(zee::canConstruct("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
-    EXPECT_FALSE(zee::canConstruct(
+    EXPECT_TRUE(dp::memo::canConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
+    EXPECT_FALSE(dp::memo::canConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+    EXPECT_TRUE(dp::memo::canConstruct("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
+    EXPECT_FALSE(dp::memo::canConstruct(
         "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
         {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }

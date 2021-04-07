@@ -14,14 +14,14 @@ namespace {
 
 TEST(DynamicProgrammingTests, CountConstructTest)
 {
-    EXPECT_EQ(1, zee::countConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
-    EXPECT_EQ(0, zee::countConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+    EXPECT_EQ(1, dp::memo::countConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
+    EXPECT_EQ(0, dp::memo::countConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
     EXPECT_EQ(
-        4, zee::countConstruct("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
-    EXPECT_EQ(2, zee::countConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
+        4, dp::memo::countConstruct("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
+    EXPECT_EQ(2, dp::memo::countConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
     EXPECT_EQ(
         0,
-        zee::countConstruct(
+        dp::memo::countConstruct(
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
             {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }
