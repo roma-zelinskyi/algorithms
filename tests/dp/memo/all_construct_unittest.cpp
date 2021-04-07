@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/all_construct.hpp"
+#include "dp/memo/all_construct.hpp"
 
 #include <gtest/gtest.h>
 

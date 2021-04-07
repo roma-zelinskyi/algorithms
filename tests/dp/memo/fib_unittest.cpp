@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/fib.hpp"
+#include "dp/memo/fib.hpp"
 
 #include <gtest/gtest.h>
 

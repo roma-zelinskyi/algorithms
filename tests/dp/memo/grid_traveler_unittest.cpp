@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/grid_traveler.hpp"
+#include "dp/memo/grid_traveler.hpp"
 
 #include <gtest/gtest.h>
 

@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/how_sum.hpp"
+#include "dp/memo/how_sum.hpp"
 
 #include <gtest/gtest.h>
 
