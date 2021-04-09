@@ -2,7 +2,7 @@
 #
 # @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
 
-add_executable(dp-tab-tests fib_unittest.cpp)
+add_executable(dp-tab-tests fib_unittest.cpp grid_traveler_unittest.cpp)
 
 target_include_directories(dp-tab-tests PRIVATE ${GTEST_INCLUDE_DIRS}
                                             ${CMAKE_SOURCE_DIR}/src)
