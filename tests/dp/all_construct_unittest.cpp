@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/memo/all_construct.hpp"
+#include "dp/all_construct.hpp"
 
 #include <gtest/gtest.h>
 
@@ -18,20 +18,19 @@ TEST(DynamicProgrammingTests, AllConstructTest)
 {
     auto expected1 = std::forward_list<std::forward_list<std::string>>{
         {"abcd", "ef"}, {"abc", "def"}, {"ab", "cd", "ef"}, {"ab", "c", "def"}};
-    EXPECT_EQ(
-        expected1, dp::memo::allConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
+    EXPECT_EQ(expected1, dp::allConstruct("abcdef", {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
 
     EXPECT_EQ(
         std::forward_list<std::forward_list<std::string>>{},
-        dp::memo::allConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+        dp::allConstruct("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
 
     auto expected2 =
         std::forward_list<std::forward_list<std::string>>{{"p", "ur", "p", "le"}, {"purp", "le"}};
 
-    EXPECT_EQ(expected2, dp::memo::allConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
+    EXPECT_EQ(expected2, dp::allConstruct("purple", {"purp", "p", "ur", "le", "purpl"}));
     EXPECT_EQ(
         std::forward_list<std::forward_list<std::string>>{},
-        dp::memo::allConstruct(
+        dp::allConstruct(
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
             {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }

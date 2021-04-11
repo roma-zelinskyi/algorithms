@@ -6,8 +6,8 @@
 
 #include "fib.hpp"
 
-#include <iostream>
 #include <unordered_map>
+#include <vector>
 
 namespace {
 
@@ -27,7 +27,7 @@ fibMemo(std::unordered_map<std::uint32_t, std::uint32_t>& memo, const std::uint3
 
 } // namespace
 
-namespace dp::memo {
+namespace dp {
 
 std::uint32_t fib(const std::uint32_t num)
 {
@@ -38,5 +38,18 @@ std::uint32_t fib(const std::uint32_t num)
     return f;
 }
 
-} // namespace dp::memo
+std::uint32_t fibTab(const std::uint32_t num)
+{
+    auto table = std::vector<std::uint32_t>(num + 2, 0);
+    table[1] = 1;
+
+    for (auto i = 0u; i <= num; ++i) {
+        table[i + 1] += table[i];
+        table[i + 2] += table[i];
+    }
+
+    return table[num];
+}
+
+} // namespace dp
 

@@ -6,8 +6,10 @@
 
 #include "grid_traveler.hpp"
 
+#include <memory_resource>
 #include <unordered_map>
 #include <utility>
+#include <vector>
 
 template<class T>
 inline void hash_combine(std::size_t& seed, const T& v)
@@ -33,10 +35,9 @@ struct hash<pair<S, T>>
 namespace {
 
 std::uint32_t gridTravelerMemo(
-    [[maybe_unused]] std::unordered_map<std::pair<std::uint32_t, std::uint32_t>, std::uint32_t>&
-        memo,
-    [[maybe_unused]] const std::uint32_t n,
-    [[maybe_unused]] const std::uint32_t m)
+    std::unordered_map<std::pair<std::uint32_t, std::uint32_t>, std::uint32_t>& memo,
+    const std::uint32_t n,
+    const std::uint32_t m)
 {
     if (n == 0 || m == 0)
         return 0;
@@ -57,7 +58,7 @@ std::uint32_t gridTravelerMemo(
 
 } // namespace
 
-namespace dp::memo {
+namespace dp {
 
 std::uint32_t gridTraveler(const std::uint32_t n, const std::uint32_t m)
 {
@@ -66,6 +67,25 @@ std::uint32_t gridTraveler(const std::uint32_t n, const std::uint32_t m)
     return gridTravelerMemo(memo, n, m);
 }
 
-} // namespace dp::memo
+std::uint32_t gridTravelerTab(const std::uint32_t n, const std::uint32_t m)
+{
+    auto buf = std::array<std::byte, 409600>{};
+    auto mbr = std::pmr::monotonic_buffer_resource{buf.data(), buf.size()};
+    auto table = std::pmr::vector<std::pmr::vector<std::uint32_t>>(
+        n + 2, std::pmr::vector<std::uint32_t>(m + 2, 0, &mbr), &mbr);
 
+    table[1][1] = 1;
 
+    for (auto i = 0u; i <= n; ++i) {
+        for (auto j = 0u; j <= m; ++j) {
+            table[i][j + 1] += table[i][j];
+            table[i + 1][j] += table[i][j];
+        }
+    }
+
+    auto res = table[n][m];
+    mbr.release();
+    return res;
+}
+
+} // namespace dp

@@ -43,7 +43,7 @@ std::optional<std::vector<int>> howSumMemo(
 
 } // namespace
 
-namespace dp::memo {
+namespace dp {
 
 std::vector<int> howSum(const int num, const std::vector<int>& arr)
 {
@@ -53,5 +53,5 @@ std::vector<int> howSum(const int num, const std::vector<int>& arr)
     return (res == std::nullopt ? std::vector<int>{} : res.value());
 }
 
-} // namespace dp::memo
+} // namespace dp
 

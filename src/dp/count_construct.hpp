@@ -7,12 +7,12 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
-namespace dp::memo {
+namespace dp {
 
-std::vector<int> howSum(int num, const std::vector<int>& arr);
+std::uint32_t countConstruct(const std::string& target, const std::vector<std::string>& wordBank);
 
-} // namespace dp::memo
-
+} // namespace dp
 

@@ -6,9 +6,13 @@
 
 #include "can_sum.hpp"
 
+#include <array>
+#include <memory_resource>
 #include <unordered_map>
+#include <vector>
 
 namespace {
+
 bool canSumMemo(std::unordered_map<int, bool>& memo, const int num, const std::vector<int>& arr)
 {
     if (num == 0)
@@ -32,7 +36,7 @@ bool canSumMemo(std::unordered_map<int, bool>& memo, const int num, const std::v
 
 } // namespace
 
-namespace dp::memo {
+namespace dp {
 
 bool canSum(const int num, const std::vector<int>& arr)
 {
@@ -40,5 +44,23 @@ bool canSum(const int num, const std::vector<int>& arr)
     return canSumMemo(memo, num, arr);
 }
 
-} // namespace dp::memo
+bool canSumTab(const std::uint32_t num, const std::vector<std::uint32_t>& arr)
+{
+    auto buffer = std::array<std::byte, 409600>{};
+    auto mr = std::pmr::monotonic_buffer_resource{buffer.data(), buffer.size()};
+    auto table = std::pmr::vector<bool>(num + 1, false, &mr);
+    table[0] = true;
+
+    for (auto i = 0u; i <= num; ++i) {
+        if (table[i]) {
+            for (const auto& it : arr)
+                if (it + i <= num)
+                    table[it + i] = true;
+        }
+    }
+
+    return table.at(num);
+}
+
+} // namespace dp
 

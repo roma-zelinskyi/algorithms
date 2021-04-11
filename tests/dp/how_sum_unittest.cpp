@@ -4,7 +4,7 @@
  *  @author  Roman Zelinskyi <lord.zelinskyi@gmail.com>
  */
 
-#include "dp/memo/how_sum.hpp"
+#include "dp/how_sum.hpp"
 
 #include <gtest/gtest.h>
 
@@ -16,12 +16,12 @@ namespace {
 TEST(DynamicProgrammingTests, HowSumTest)
 {
     auto expected1 = std::vector{4, 4};
-    EXPECT_EQ(expected1, dp::memo::howSum(8, {4, 2, 8}));
+    EXPECT_EQ(expected1, dp::howSum(8, {4, 2, 8}));
 
     auto expected2 = std::vector{4, 3};
-    EXPECT_EQ(expected2, dp::memo::howSum(7, {5, 3, 4, 7}));
+    EXPECT_EQ(expected2, dp::howSum(7, {5, 3, 4, 7}));
 
-    EXPECT_EQ(std::vector<int>{}, dp::memo::howSum(300, {7, 14}));
+    EXPECT_EQ(std::vector<int>{}, dp::howSum(300, {7, 14}));
 }
 
 } // namespace
