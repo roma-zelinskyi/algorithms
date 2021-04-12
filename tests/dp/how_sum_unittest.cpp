@@ -8,7 +8,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <vector>
 
 namespace {
@@ -22,6 +21,17 @@ TEST(DynamicProgrammingTests, HowSumTest)
     EXPECT_EQ(expected2, dp::howSum(7, {5, 3, 4, 7}));
 
     EXPECT_EQ(std::vector<int>{}, dp::howSum(300, {7, 14}));
+}
+
+TEST(DynamicProgrammingTests, HowSumTabTest)
+{
+    auto expected1 = std::vector{2u, 2u, 4u};
+    EXPECT_EQ(expected1, dp::howSumTab(8, {2, 4}).value());
+
+    auto expected2 = std::vector{3u, 4u};
+    EXPECT_EQ(expected2, dp::howSumTab(7, {5, 3, 4}).value());
+
+    EXPECT_EQ(std::nullopt, dp::howSumTab(300, {7, 14}));
 }
 
 } // namespace
