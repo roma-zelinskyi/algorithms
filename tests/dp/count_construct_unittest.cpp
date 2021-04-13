@@ -25,6 +25,21 @@ TEST(DynamicProgrammingTests, CountConstructTest)
             {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }
 
+TEST(DynamicProgrammingTests, CountConstructTabTest)
+{
+    EXPECT_EQ(1, dp::countConstructTab("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
+    EXPECT_EQ(
+        0, dp::countConstructTab("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+    EXPECT_EQ(
+        4, dp::countConstructTab("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
+    EXPECT_EQ(2, dp::countConstructTab("purple", {"purp", "p", "ur", "le", "purpl"}));
+    EXPECT_EQ(
+        0,
+        dp::countConstructTab(
+            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
+            {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
+}
+
 } // namespace
 
 

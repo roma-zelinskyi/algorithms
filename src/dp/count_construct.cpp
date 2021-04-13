@@ -41,5 +41,23 @@ std::uint32_t countConstruct(const std::string& target, const std::vector<std::s
     return countConstructMemo(memo, target, wordBank);
 }
 
+std::uint32_t countConstructTab(const std::string& target, const std::vector<std::string>& wordBank)
+{
+    auto table = std::vector<std::uint32_t>(target.size() + 1, 0);
+    table[0] = 1;
+
+    for (auto i = 0u; i <= target.size(); ++i) {
+        if (table[i] != 0) {
+            auto subTarget = target.substr(i, target.size());
+            for (const auto& word : wordBank) {
+                if (subTarget.starts_with(word))
+                    table[i + word.size()] += table[i];
+            }
+        }
+    }
+
+    return table[target.size()];
+}
+
 } // namespace dp
 
