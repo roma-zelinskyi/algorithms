@@ -8,6 +8,7 @@ add_executable(
   grid_traveler_unittest.cpp
   can_sum_unittest.cpp
   how_sum_unittest.cpp
+  best_sum_unittest.cpp
   can_construct_unittest.cpp
   count_construct_unittest.cpp
   all_construct_unittest.cpp)
