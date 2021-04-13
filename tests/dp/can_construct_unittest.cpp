@@ -22,6 +22,16 @@ TEST(DynamicProgrammingTests, CanConstructTest)
         {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }
 
+TEST(DynamicProgrammingTests, CanConstructTabTest)
+{
+    EXPECT_TRUE(dp::canConstructTab("abcdef", {"ab", "abc", "cd", "def", "abcd"}));
+    EXPECT_FALSE(dp::canConstructTab("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+    EXPECT_TRUE(dp::canConstructTab("enterapotentpot", {"a", "p", "ent", "enter", "ot", "o", "t"}));
+    EXPECT_FALSE(dp::canConstructTab(
+        "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
+        {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
+}
+
 } // namespace
 
 

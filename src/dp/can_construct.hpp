@@ -12,6 +12,7 @@
 namespace dp {
 
 bool canConstruct(const std::string& target, const std::vector<std::string>& wordBank);
+bool canConstructTab(const std::string& target, const std::vector<std::string>& wordBank);
 
 } // namespace dp
 

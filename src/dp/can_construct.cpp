@@ -7,6 +7,7 @@
 #include "can_construct.hpp"
 
 #include <unordered_map>
+#include <vector>
 
 namespace {
 
@@ -42,6 +43,24 @@ bool canConstruct(const std::string& target, const std::vector<std::string>& wor
 {
     auto memo = std::unordered_map<std::string, bool>{};
     return canConstructMemo(memo, target, wordBank);
+}
+
+bool canConstructTab(const std::string& target, const std::vector<std::string>& wordBank)
+{
+    auto table = std::vector<bool>(target.size() + 1, false);
+    table[0] = true;
+
+    for (auto i = 0u; i <= target.size(); ++i) {
+        if (table[i]) {
+            auto subStr = target.substr(i, target.size());
+            for (const auto& word : wordBank) {
+                if (subStr.starts_with(word))
+                    table[i + word.size()] = true;
+            }
+        }
+    }
+
+    return table[target.size()];
 }
 
 } // namespace dp
