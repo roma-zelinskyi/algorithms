@@ -35,6 +35,21 @@ TEST(DynamicProgrammingTests, AllConstructTest)
             {"e", "ee", "eee", "eeee", "eeeee", "eeeeee"}));
 }
 
+TEST(DynamicProgrammingTests, AllConstructTabTest)
+{
+    auto expected1 = std::vector<std::vector<std::string>>{
+        {"abc", "def"}, {"ab", "c", "def"}, {"abcd", "ef"}, {"ab", "cd", "ef"}};
+    EXPECT_EQ(
+        expected1, dp::allConstructTab("abcdef", {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
+
+    EXPECT_EQ(
+        std::vector<std::vector<std::string>>{},
+        dp::allConstructTab("skateboard", {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+
+    auto expected2 = std::vector<std::vector<std::string>>{{"purp", "le"}, {"p", "ur", "p", "le"}};
+    EXPECT_EQ(expected2, dp::allConstructTab("purple", {"purp", "p", "ur", "le", "purpl"}));
+}
+
 } // namespace
 
 
