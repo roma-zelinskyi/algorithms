@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <unordered_map>
 
 namespace zee {
@@ -51,7 +52,6 @@ public:
 
             node = node->paths.at(it);
         }
-
         node->value = value;
     }
 
@@ -70,25 +70,28 @@ public:
 
     void erase(const _Key& key)
     {
-        auto node = _root;
-        auto curNode = std::shared_ptr<Node>{nullptr};
+        eraseRec(_root, key.begin(), key.end());
+    }
 
-        for (const auto& it : key) {
-            if (!node->paths.contains(it))
-                return;
+private:
+    void eraseRec(
+        std::shared_ptr<Node> cur,
+        _Key::const_iterator it,
+        const _Key::const_iterator& end)
+    {
+        if (it == end)
+            return;
 
-            curNode = node->paths.at(it);
+        if (!cur->paths.contains(*it))
+            throw std::invalid_argument{"No such key exist."};
 
-            if (curNode->paths.empty()) {
-                node->paths.erase(it);
-                return;
-            }
+        auto next = cur->paths.at(*it);
+        eraseRec(next, std::next(it), end);
 
-            node = curNode;
-        }
-
-        if (curNode)
-            curNode->value.reset();
+        if (next->paths.empty())
+            cur->paths.erase(*it);
+        else if (std::next(it) == end)
+            next->value.reset();
     }
 
 private:
