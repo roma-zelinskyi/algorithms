@@ -8,3 +8,4 @@ enable_testing()
 
 add_subdirectory(graph-theory)
 add_subdirectory(dp)
+add_subdirectory(data-structure)
