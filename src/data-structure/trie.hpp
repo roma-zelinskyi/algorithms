@@ -43,6 +43,19 @@ public:
     {
     }
 
+    const _Value& at(const _Key& key)
+    {
+        auto node = _root;
+        for (const auto& it : key) {
+            if (!node->paths.contains(it))
+                throw std::invalid_argument{"No such key exist."};
+
+            node = node->paths.at(it);
+        }
+
+        return node->value.value();
+    }
+
     void insert(const _Key& key, const _Value& value)
     {
         auto node = _root;
@@ -65,7 +78,7 @@ public:
             node = node->paths.at(it);
         }
 
-        return true;
+        return node->value.has_value();
     }
 
     void erase(const _Key& key)
@@ -88,9 +101,12 @@ private:
         auto next = cur->paths.at(*it);
         eraseRec(next, std::next(it), end);
 
-        if (next->paths.empty())
+        if (next->paths.empty()) {
+            if (std::next(it) != end && next->value)
+                return;
+
             cur->paths.erase(*it);
-        else if (std::next(it) == end)
+        } else if (std::next(it) == end)
             next->value.reset();
     }
 
