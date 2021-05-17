@@ -102,7 +102,7 @@ private:
         eraseRec(next, std::next(it), end);
 
         if (next->paths.empty()) {
-            if (std::next(it) != end && next->value)
+            if (std::next(it) != end && next->value.has_value())
                 return;
 
             cur->paths.erase(*it);
